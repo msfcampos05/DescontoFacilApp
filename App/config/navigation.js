@@ -95,7 +95,7 @@ const RootStackScreen = () => {
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(!isLoading);
-      //setUser({});
+      setUser({});
     }, 500);
   }, []);
 
