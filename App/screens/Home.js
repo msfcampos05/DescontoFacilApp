@@ -4,6 +4,8 @@ import { Text, View } from "react-native";
 
 export default ({ navigation }) => (
     <View style={{ flex: 1 }}>
-        <Text> Tela Home</Text>
+        <Text> Tela Home
+          dfgdfgdfgd
+        </Text>
   </View>
 );
