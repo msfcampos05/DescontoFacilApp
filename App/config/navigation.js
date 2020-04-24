@@ -12,10 +12,15 @@ import HomeScreen from "../screens/Home";
 import ProfileScreen from "../screens/Profile";
 import WalletScreen from "../screens/Wallet";
 
+import "firebase/auth";
+import * as firebase from 'firebase'
 
+const AppTabs = createBottomTabNavigator();
+const RootStack = createStackNavigator();
+const AuthStack = createStackNavigator();
 
 //Tab Navigator
-const AppTabs = createBottomTabNavigator();
+
 const AppTabsScreen = () => (
 
   <AppTabs.Navigator>
@@ -50,7 +55,7 @@ const AppTabsScreen = () => (
         tabBarIcon: props => (
           
           <Ionicons
-            name="ios-checkmark-circle-outline"
+            name="md-person"
             size={props.size}
             color={props.color}
           />
@@ -62,7 +67,6 @@ const AppTabsScreen = () => (
 );
 
 //Telas de autenticação e login
-const AuthStack = createStackNavigator();
 
 const AuthStackScreen = () => (
   <AuthStack.Navigator>
@@ -71,7 +75,6 @@ const AuthStackScreen = () => (
 );
 
 
-const RootStack = createStackNavigator();
 
 const RootStackScreen = () => {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -80,7 +83,7 @@ const RootStackScreen = () => {
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(!isLoading);
-      setUser({});
+      //setUser({});
     }, 500);
   }, []);
 

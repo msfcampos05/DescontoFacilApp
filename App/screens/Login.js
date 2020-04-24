@@ -1,16 +1,4 @@
-import React from "react";
-import { Button } from "react-native";
 
-export default ({ navigation }) => (
-  <>
-    <Button title="Sign In" onPress={() => navigation.navigate("AppTabsScreen")} />
-    <Button title="Sign Up" onPress={() => navigation.push("AppTabsScreen")} />
-  </>
-);
-
-
-
-/*
 
 
 import React, { useState, useEffect, Component } from 'react';
@@ -92,7 +80,7 @@ export default ({ navigation }) => {
           setTimeout(() => {
             setLoading(false);
             // if isNewUser is true direct to welcome screen else to home called tab1 (condição ternária javascript)
-              navigation.navigate('Root');
+            navigation.navigate('Root');
           },
             3500);
 
@@ -286,4 +274,3 @@ const styles = StyleSheet.create({
   },
 
 })
-*/
