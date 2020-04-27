@@ -9,9 +9,9 @@ Tenha um catalogo de cupons virtual para sua loja. Com ele, suas promoções pod
 You'll need to have [Expo](https://expo.io/learn) installed on your machine in order to follow along.
 
 ## Configuration
+Add a `config/firebase.js` file with the following content (make sure to fill in the values from your own firebase account):
 
-Add a App/config/firebase.js file with the following content (make sure to fill in the values from your own firebase account):
-
+```js
 export default {
   API_KEY: <API_KEY>,
   AUTH_DOMAIN: <AUTH_DOMAIN>,
@@ -20,6 +20,7 @@ export default {
   STORAGE_BUCKET: <STORAGE_BUCKET>,
   MESSAGING_SENDER_ID: <MESSAGING_SENDER_ID>,
 };
+```
 
 ## Installation
 
@@ -28,35 +29,39 @@ export default {
 
 ## Running
 
-Available Scripts
-This app was initialized using Yarn and therefore you should use Yarn commands going forward.
+### Use the `yarn start`, `yarn ios`, or `yarn android` tasks as detailed below.
+
+  ## Available Scripts
+
+  This app was initialized using Yarn and therefore you should use Yarn commands going forward.
 
 Below you'll find information about performing common tasks.
 
-## Available Scripts
+* [Available Scripts](#available-scripts)
+  * [yarn start](#npm-start)
+  * [yarn ios](#npm-run-ios)
+  * [yarn android](#npm-run-android)
 
-### yarn start
-### yarn ios
-### yarn android
-### yarn start
+  ### `yarn start`
 
-Runs your app in development mode.
+  Runs your app in development mode.
 
-Open it in the Expo app on your phone to view it. It will reload if you save edits to your files, and you will see build errors and logs in the terminal.
+  Open it in the [Expo app](https://expo.io) on your phone to view it. It will reload if you save edits to your files, and you will see build errors and logs in the terminal.
 
-Sometimes you may need to reset or clear the React Native packager's cache. To do so, you can pass the --reset-cache flag to the start script:
+  Sometimes you may need to reset or clear the React Native packager's cache. To do so, you can pass the `--reset-cache` flag to the start script:
 
-### yarn start --reset-cache
-### yarn ios
+  ```
+  yarn start --reset-cache
+  ```
 
-Like yarn start, but also attempts to open your app in the iOS Simulator if you're on a Mac and have it installed.
+  #### `yarn ios`
 
-yarn android
-Like yarn start, but also attempts to open your app on a connected Android device or emulator. Requires an installation of Android build tools (see React Native docs for detailed setup).
+  Like `yarn start`, but also attempts to open your app in the iOS Simulator if you're on a Mac and have it installed.
 
-- `yarn run ios`/`npm run ios` or `yarn run android`/`npm run android` or `expo start` or `yarn start`
+  #### `yarn android`
 
----
+  Like `yarn start`, but also attempts to open your app on a connected Android device or emulator. Requires an installation of Android build tools (see [React Native docs](https://facebook.github.io/react-native/docs/getting-started.html) for detailed setup).
+
 
 If you're interested about DescontoFacilApp be sure to visit [DescontoFacilApp](https://msfcampos05.wixsite.com/guiadecomprasapp)!
 
