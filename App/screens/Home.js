@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import {
   View,
   Text,
@@ -10,24 +9,20 @@ import {
   SafeAreaView,
   Alert,
   StatusBar,
-
-
 } from 'react-native';
-
-import { Icon } from 'react-native-elements';
+import { Icon, SearchBar } from 'react-native-elements';
 import addImage from '../../assets/plusCategory.png';
-
 import * as firebase from 'firebase';
 
 const Home = ({ navigation }) => {
-
+  const [search, setSearch] = useState('');
   const [user, setUser] = useState([]);
   const [users, setUsers] = useState([]); // Initial empty array of users
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
 
   // On load, fetch our users and subscribe to updates
   useEffect(() => {
-
+    const { search } = search;
     const currentUser = firebase.auth().currentUser;
     const firestoreRef = firebase.firestore().collection("users").doc(currentUser.uid);
     setUser(currentUser);
@@ -55,6 +50,10 @@ const Home = ({ navigation }) => {
     return () => unsubscribe(); // Stop listening for updates whenever the component unmounts
 
   }, []);
+
+   const updateSearch = search => {
+    setSearch({ search });
+  };
 
   if (loading) {
     return null; // Show a loading spinner
@@ -98,7 +97,11 @@ const Home = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
-
+      <SearchBar
+        placeholder="Type Here..."
+        onChangeText={this.updateSearch}
+        value={search}
+      />
         <StatusBar
           hidden={false}
           translucent={false}
