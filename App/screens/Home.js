@@ -10,59 +10,27 @@ import {
   Alert,
   StatusBar,
 } from 'react-native';
-import { Icon, SearchBar } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import addImage from '../../assets/plusCategory.png';
 import * as firebase from 'firebase';
+import SearchBar from './searchBar';
+
+
+async function getProducts() {
+  
+  
+}
 
 const Home = ({ navigation }) => {
-  const [search, setSearch] = useState('');
+
   const [user, setUser] = useState([]);
   const [users, setUsers] = useState([]); // Initial empty array of users
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
 
   // On load, fetch our users and subscribe to updates
   useEffect(() => {
-    const { search } = search;
-    const currentUser = firebase.auth().currentUser;
-    const firestoreRef = firebase.firestore().collection("users").doc(currentUser.uid);
-    setUser(currentUser);
-
-    const unsubscribe = firestoreRef
-      .collection("trocas")
-      .onSnapshot((querySnapshot) => {
-        // Add users into an array
-        const users = querySnapshot.docs.map((documentSnapshot) => {
-          return {
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id, // required for FlatList
-          };
-        });
-
-        // Update state with the users array
-        setUsers(users);
-
-        // As this can trigger multiple times, only update loading after the first update
-        if (loading) {
-          setLoading(false);
-        }
-      });
-
-    return () => unsubscribe(); // Stop listening for updates whenever the component unmounts
 
   }, []);
-
-   const updateSearch = search => {
-    setSearch({ search });
-  };
-
-  if (loading) {
-    return null; // Show a loading spinner
-  }
-
-  function handleSubmit() {
-
-      //NAVEGAR PARA PAGINA ADICIONAR
-  };
 
 
   function deleteItemById(id) {
@@ -80,8 +48,8 @@ const Home = ({ navigation }) => {
 
   function handleDelete(id) {
 
-    firebase.firestore()
-      .collection("users")
+    firestore()
+      .collection("products")
       .doc(auth().currentUser.uid)
       .collection("trocas")
       .doc(id)
@@ -94,53 +62,45 @@ const Home = ({ navigation }) => {
   };
 
 
+
   return (
+
     <>
-      <SafeAreaView style={styles.container}>
-      <SearchBar
-        placeholder="Type Here..."
-        onChangeText={this.updateSearch}
-        value={search}
-      />
-        <StatusBar
-          hidden={false}
-          translucent={false}
-          animated={true}
-          barStyle={'light-content'}
-          backgroundColor='#694fad'
-        />
+      <SearchBar />
 
-        <FlatList style={styles.flatList}
-          data={users}
-          renderItem={
-            ({ item }) =>
-              <TouchableOpacity onLongPress={() => deleteItemById(item.key)}>
+      <FlatList 
+        data={users}
+        showsVerticalScrollIndicator={false}
+        renderItem={
+          ({ item }) =>
+            <TouchableOpacity onLongPress={() => deleteItemById(item.key)}>
+              <View style={styles.feedItem}>
+                <Image source={item.avatar} style={styles.avatar} />
+                <View style={{ flex: 1 }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    <View>
+                      <Text style={styles.name}>{item.name}</Text>
+                      <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
+                    </View>
 
-                <View style={styles.row}>
-
-                  <Icon
-                    name={item.icon}
-                    color='#517'
-                    type='ionicon'
-                  />
-                  <View style={styles.textInfo}>
-                    <Text style={styles.textItemTroca}>{item.name}</Text>
-                    <Text style={styles.textItemData}>{item.date}</Text>
-                    <Text style={styles.textItemData}>Expira dia {item.pago}</Text>
+                    <Ionicons name="ios-more" size={24} color="#73788B" />
                   </View>
-
-                  <Text style={styles.textTurn}>{item.turno}</Text>
-
+                  <Text style={styles.post}>{item.text}</Text>
+                  <Image source={post.image} style={styles.postImage} resizeMode="cover" />
+                  <View style={{ flexDirection: "row" }}>
+                    <Ionicons name="ios-heart-empty" size={24} color="#73788B" style={{ marginRight: 16 }} />
+                    <Ionicons name="ios-chatboxes" size={24} color="#73788B" />
+                  </View>
                 </View>
-              </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
 
-          }
+        }
 
-        />
+      />
 
-      </SafeAreaView>
       <View>
-        <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
+        <TouchableOpacity style={styles.addButton}>
           <View style={styles.ViewiButton}>
             <Image style={styles.Image} source={addImage} />
           </View>
@@ -154,79 +114,63 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    padding: 8,
-    flexDirection: 'column', // main axis
-    justifyContent: 'center', // main axis
-    alignItems: 'center', // cross axis
-    backgroundColor: '#fffa'
-  },
-  tittle: {
-    fontWeight: 'bold',
-    marginTop: 40,
-    marginBottom: 10,
-    fontSize: 18,
-    textAlign: 'center'
-  },
-  row: {
-    elevation: 1,
-    borderRadius: 2,
-    backgroundColor: '#ffff',
-    flexDirection: 'row',  // main axis
-    justifyContent: 'flex-start', // main axis
-    alignItems: 'center', // cross axis
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 18,
-    paddingRight: 26,
-    marginLeft: 14,
-    marginRight: 14,
-    marginTop: 0,
-    marginBottom: 6,
-    flex: 1
-  },
-  textInfo: {
-    flexDirection: 'column',
-    flex: 1,
-    marginLeft: 10
-  },
-  textItemData: {
-    color: '#000',
-    textAlignVertical: 'bottom',
-    includeFontPadding: false,
-    flex: 0,
-    fontSize: 12,
-
-  }, textItemTroca: {
-    color: '#f90',
-    textAlignVertical: 'top',
-    includeFontPadding: false,
-    flex: 0,
+    backgroundColor: "#EBECF4"
+},
+header: {
+    paddingTop: 64,
+    paddingBottom: 16,
+    backgroundColor: "#FFF",
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#EBECF4",
+    shadowColor: "#454D65",
+    shadowOffset: { height: 5 },
+    shadowRadius: 15,
+    shadowOpacity: 0.2,
+    zIndex: 10
+},
+headerTitle: {
     fontSize: 20,
-
-  }, textTurn: {
-    color: '#f90',
-    paddingRight: 10,
-    paddingLeft: 5,
-    flex: 0,
-    fontSize: 16,
-
-  },
-  flatList: {
-    marginTop: 14,
-    alignSelf: "stretch",
-  },
-  textItem: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    marginBottom: 15,
-    color: '#fff'
-  },
-  dataView: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
+    fontWeight: "500"
+},
+feed: {
+    marginHorizontal: 16
+},
+feedItem: {
+    backgroundColor: "#FFF",
+    borderRadius: 5,
+    padding: 8,
+    flexDirection: "row",
+    marginVertical: 8
+},
+avatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    marginRight: 16
+},
+name: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#454D65"
+},
+timestamp: {
+    fontSize: 11,
+    color: "#C4C6CE",
+    marginTop: 4
+},
+post: {
+    marginTop: 16,
+    fontSize: 14,
+    color: "#838899"
+},
+postImage: {
+    width: undefined,
+    height: 150,
+    borderRadius: 5,
+    marginVertical: 16
+},
   Image: {
     width: 20,
     height: 23,

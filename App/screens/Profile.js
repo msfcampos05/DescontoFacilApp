@@ -42,10 +42,12 @@ export default function Profile({ navigation }) {
     const [secondTextInput, setsecondTextInput] = useState();
     const [thirtyTextInput, setthirtyTextInput] = useState();
     console.disableYellowBox = true;
-    useEffect(() => {
+
+    
+
+    async function getUserInfo() {
 
         const user = firebase.auth().currentUser;
-
         if (firebase.auth().currentUser.photoURL == null || user.photoURL == '') {
             setavatarSource("https://firebasestorage.googleapis.com/v0/b/descontofacilapp-ca0e7.appspot.com/o/profile%2Fprofile-blank.png?alt=media&token=0b0c6934-fbfd-4ed7-9510-1d2124f00fcf");
         } else {
@@ -68,64 +70,22 @@ export default function Profile({ navigation }) {
             console.log('erro no profile.js',error);
         }
         
-    })
+    }
+
+
+    useEffect(() => {
+
+        const user = firebase.auth().currentUser;
+        const userInfo = getUserInfo();
+
+        return () => userInfo; // Stop listening for updates whenever the component unmounts
+        
+    },[])
 
 
     async function changePhto() {
 
-        const options = {
-            title: 'Selecione uma nova foto de perfil',
-            cancelButtonTitle: 'Cancelar',
-            takePhotoButtonTitle: 'Pegar da câmera',
-            chooseFromLibraryButtonTitle: 'Pegar da Galeria',
-            allowsEditing: true,
-            //customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        }
-
-        ImagePicker.showImagePicker(options, (response) => {
-
-            const sessionId = firebase.auth().currentUser.uid;
-            const imageRef = firebase.storage().ref('images').child(`${sessionId}`);
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else {
-                const source = { data: response.data };
-                try {
-                    setwhatoading(1);
-                    setLoading(true);
-                    imageRef.putString(response.data, 'base64')
-                        .then(() => {
-                            imageRef.getDownloadURL().then(function (url) {
-                                firebase.auth().currentUser.updateProfile({
-                                    photoURL: url
-                                }).then(function () {
-                                    setTimeout(() => {
-
-                                        setLoading(false);
-                                        Alert.alert('Tudo OK!', 'Sua foto foi atualizada!', [
-                                            {
-                                                text: 'Fechar',
-                                                style: 'cancel',
-                                            }
-                                        ]);
-                                    },
-                                        2000);
-
-                                })
-                            })
-                        })
-
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        });
+        
     }
 
     function setModalVisible(visible) {

@@ -28,7 +28,13 @@ const HomeStackScreen = () => (
       name="Home"
       component={HomeScreen}
       options={{
-        headerTitle: "Desconto Fácil"
+        headerTitle: "Desconto Fácil",
+        headerStyle: {
+        },
+        
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
       }}
     />
     
