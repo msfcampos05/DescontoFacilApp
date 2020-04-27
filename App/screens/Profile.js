@@ -128,7 +128,8 @@ export default function Profile({ navigation }) {
                     .update({
                         name: nam,
                         tel: tell,
-                        cargo: carg
+                        cargo: carg,
+                        innew:true
                     })
                     .then(function () {
 
@@ -344,7 +345,7 @@ const styles = StyleSheet.create({
     },
     separator: {
         alignSelf: 'center',
-        color: '#ffff'
+        color: '#f55'
     },
     TextName: {
         fontSize: 20,
@@ -362,7 +363,7 @@ const styles = StyleSheet.create({
     },
     button: {
         height: 42,
-        backgroundColor: '#f05a5b',
+        backgroundColor: '#f09a5b',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 2,
@@ -382,7 +383,7 @@ const styles = StyleSheet.create({
 
     modalbutton: {
         height: 42,
-        backgroundColor: '#f05a5b',
+        backgroundColor: '#f95b',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 40,

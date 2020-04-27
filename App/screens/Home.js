@@ -17,8 +17,20 @@ import SearchBar from './searchBar';
 
 
 async function getProducts() {
-  
-  
+
+  firebase.firestore
+    .collection('products')
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        if (doc && doc.exists) {
+          console.log(doc.id, ' => ', doc.data());
+          setProducts(doc.data());
+
+        }
+      });
+    });
+
 }
 
 const Home = ({ navigation }) => {
@@ -26,9 +38,12 @@ const Home = ({ navigation }) => {
   const [user, setUser] = useState([]);
   const [users, setUsers] = useState([]); // Initial empty array of users
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
+  const [Products, setProducts] = useState([]);
 
   // On load, fetch our users and subscribe to updates
   useEffect(() => {
+
+    getProducts();
 
   }, []);
 
@@ -67,13 +82,15 @@ const Home = ({ navigation }) => {
 
     <>
       <SearchBar />
-
-      <FlatList 
-        data={users}
+      <Text>
+        {Products.id}
+      </Text>
+      <FlatList
+        data={Products}
         showsVerticalScrollIndicator={false}
         renderItem={
           ({ item }) =>
-            <TouchableOpacity onLongPress={() => deleteItemById(item.key)}>
+            <TouchableOpacity onLongPress={() => deleteItemById(doc.id)}>
               <View style={styles.feedItem}>
                 <Image source={item.avatar} style={styles.avatar} />
                 <View style={{ flex: 1 }}>
@@ -115,8 +132,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#EBECF4"
-},
-header: {
+  },
+  header: {
     paddingTop: 64,
     paddingBottom: 16,
     backgroundColor: "#FFF",
@@ -129,48 +146,48 @@ header: {
     shadowRadius: 15,
     shadowOpacity: 0.2,
     zIndex: 10
-},
-headerTitle: {
+  },
+  headerTitle: {
     fontSize: 20,
     fontWeight: "500"
-},
-feed: {
+  },
+  feed: {
     marginHorizontal: 16
-},
-feedItem: {
+  },
+  feedItem: {
     backgroundColor: "#FFF",
     borderRadius: 5,
     padding: 8,
     flexDirection: "row",
     marginVertical: 8
-},
-avatar: {
+  },
+  avatar: {
     width: 36,
     height: 36,
     borderRadius: 18,
     marginRight: 16
-},
-name: {
+  },
+  name: {
     fontSize: 15,
     fontWeight: "500",
     color: "#454D65"
-},
-timestamp: {
+  },
+  timestamp: {
     fontSize: 11,
     color: "#C4C6CE",
     marginTop: 4
-},
-post: {
+  },
+  post: {
     marginTop: 16,
     fontSize: 14,
     color: "#838899"
-},
-postImage: {
+  },
+  postImage: {
     width: undefined,
     height: 150,
     borderRadius: 5,
     marginVertical: 16
-},
+  },
   Image: {
     width: 20,
     height: 23,
