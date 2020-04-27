@@ -70,17 +70,11 @@ export default ({ navigation }) => {
 
           //chek is is new user to redirect to welcome screen
 
-          //Usando a função do firestorage referencia no import acima vindo de outro arquivo js chamado firebaseConfig.js dentro da pasta config
-          firestoreDocRef().then((objUser) => {
-            isNewUser = objUser.isnew;
-          })
-
           setLoading(true);
           //Loading awai 1000ms to close
           setTimeout(() => {
             setLoading(false);
             // if isNewUser is true direct to welcome screen else to home called tab1 (condição ternária javascript)
-            navigation.navigate('Root');
           },
             3500);
 

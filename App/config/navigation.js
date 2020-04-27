@@ -18,6 +18,35 @@ import * as firebase from 'firebase'
 const AppTabs = createBottomTabNavigator();
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
+const HomeStack = createStackNavigator();
+const WalletStack = createStackNavigator();
+
+
+const HomeStackScreen = () => (
+  <HomeStack.Navigator>
+    <HomeStack.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
+        headerTitle: "Desconto Fácil"
+      }}
+    />
+    
+  </HomeStack.Navigator>
+);
+
+const WalletStackScreen = () => (
+  <WalletStack.Navigator>
+    <WalletStack.Screen
+      name="Wallet"
+      component={WalletScreen}
+      options={{
+        headerTitle: "Meus Cupons"
+      }}
+    />
+    
+  </WalletStack.Navigator>
+);
 
 //Tab Navigator
 
@@ -27,7 +56,7 @@ const AppTabsScreen = () => (
 
     <AppTabs.Screen
       name="home"
-      component={HomeScreen}
+      component={HomeStackScreen}
       options={{
         tabBarLabel: 'Início',
         tabBarIcon: props => (
@@ -38,7 +67,7 @@ const AppTabsScreen = () => (
 
     <AppTabs.Screen
       name="wallet"
-      component={WalletScreen}
+      component={WalletStackScreen}
       options={{
         tabBarLabel: 'Carteira',
         tabBarIcon: props => (
@@ -80,10 +109,17 @@ const RootStackScreen = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [user, setUser] = React.useState(null);
 
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      setUser(user)
+    } else {
+      setUser(null)
+    }
+  });
+
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(!isLoading);
-      //setUser({});
     }, 500);
   }, []);
 
