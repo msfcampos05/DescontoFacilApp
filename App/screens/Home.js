@@ -148,6 +148,12 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 10,
   },
+  Image: {
+    width: 20,
+    height: 23,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   addButton: {
     position: 'absolute',
     backgroundColor: '#FFFCFC',
