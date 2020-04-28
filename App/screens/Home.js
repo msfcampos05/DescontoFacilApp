@@ -10,17 +10,17 @@ import {
   SafeAreaView,
   Alert,
   StatusBar,
-  Dimensions
+  Dimensions,
+  useCallback,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
 import addImage from '../../assets/plusCategory.png';
 import * as firebase from 'firebase';
-import SearchBar from './searchBar';
 
 const {width,height} = Dimensions.get("window");
 
-const Home = ({ navigation }) => {
 
+const Home = ({ navigation }) => {
+  
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [dataProducts, setDataProducts] = useState([]);
   const [query, setQuery] = useState(null);
@@ -75,10 +75,6 @@ const Home = ({ navigation }) => {
       <View style={{ height: 10, width: "180%", backgroundColor: "#e5e5e5" }} />
     )
   }
-  const filterItem = (event) =>{
-    var querY = event.nativeEvent.text;
-    const [query] = useState(querY)
-  }
 
   return (
 
@@ -90,7 +86,6 @@ const Home = ({ navigation }) => {
             placeholder = "Pesquisar produto..."
             placeholderTextColor = "gray"
             value = {query}
-            onChange = {() => filterItem()}
             style={styles.input}
           />
         </View>
@@ -146,22 +141,12 @@ const styles = StyleSheet.create({
 
   },
   input:{
-    height:80,
+    height:30,
     width:"90%",
     backgroundColor:"#fff",
     borderRadius: 10,
     padding: 5,
     paddingLeft: 10,
-  },
-  Image: {
-    width: 20,
-    height: 23,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  ViewiButton: {
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   addButton: {
     position: 'absolute',

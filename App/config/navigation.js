@@ -18,28 +18,7 @@ import * as firebase from 'firebase'
 const AppTabs = createBottomTabNavigator();
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const HomeStack = createStackNavigator();
 const WalletStack = createStackNavigator();
-
-
-const HomeStackScreen = () => (
-  <HomeStack.Navigator>
-    <HomeStack.Screen
-      name="Home"
-      component={HomeScreen}
-      options={{
-        headerTitle: "Desconto Fácil",
-        headerStyle: {
-        },
-        
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}
-    />
-    
-  </HomeStack.Navigator>
-);
 
 const WalletStackScreen = () => (
   <WalletStack.Navigator>
@@ -62,7 +41,7 @@ const AppTabsScreen = () => (
 
     <AppTabs.Screen
       name="home"
-      component={HomeStackScreen}
+      component={HomeScreen}
       options={{
         tabBarLabel: 'Início',
         tabBarIcon: props => (
