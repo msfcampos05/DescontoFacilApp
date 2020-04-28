@@ -82,6 +82,9 @@ const Home = ({ navigation }) => {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
         <View style={styles.header}>
+          <Text style={styles.headerTitle}>Desconto Fácil App</Text>
+        </View>
+        <View style={styles.header}>
           <TextInput
             placeholder="Pesquisar produto..."
             placeholderTextColor="gray"
@@ -89,32 +92,32 @@ const Home = ({ navigation }) => {
             style={styles.input}
           />
         </View>
+
+        <FlatList
+          data={dataProducts}
+          ItemSeparatorComponent={() => separetor()}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+
+              <View style={styles.productContainer}>
+                <Image
+                  style={styles.image}
+                  source={{ uri: item.img }}
+                />
+                <View style={styles.dataContainer}>
+                  <Text numberOfLines={1} style={styles.title}>{item.produto}</Text>
+                  <Text numberOfLines={5} style={styles.description} >{item.descricao}</Text>
+                  <Text style={styles.price}>{item.valor}</Text>
+                </View>
+
+              </View>)
+
+
+          }}
+
+        />
       </View>
-      <FlatList
-        data={dataProducts}
-        ItemSeparatorComponent={() => separetor()}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => {
-          return (
-
-            <View style={styles.productContainer}>
-              <Image
-                style={styles.image}
-                source={{ uri: item.img }}
-              />
-              <View style={styles.dataContainer}>
-                <Text numberOfLines={1} style={styles.title}>{item.produto}</Text>
-                <Text numberOfLines={3} style={styles.description} >{item.descricao}</Text>
-                <Text style={styles.price}>{item.valor}</Text>
-              </View>
-
-            </View>)
-
-
-        }}
-
-      />
-
       <View>
         <TouchableOpacity style={styles.addButton}>
           <View style={styles.ViewiButton}>
@@ -131,6 +134,7 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   header: {
     height: 50,
@@ -140,6 +144,12 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center'
 
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "500",
+    color:"#fff",
+    fontWeight: "bold",
   },
   input: {
     height: 30,
@@ -187,7 +197,7 @@ const styles = StyleSheet.create({
     color: "#000"
   },
   description: {
-    fontSize: 16,
+    fontSize: 12,
     color: "gray",
   },
   price: {
