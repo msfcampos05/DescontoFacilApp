@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
+  TextInput,
   StyleSheet,
   FlatList,
   Image,
@@ -22,6 +23,7 @@ const Home = ({ navigation }) => {
 
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [dataProducts, setDataProducts] = useState([]);
+  const [query, setQuery] = useState(null);
 
   useEffect(() => {
 
@@ -73,10 +75,26 @@ const Home = ({ navigation }) => {
       <View style={{ height: 10, width: "180%", backgroundColor: "#e5e5e5" }} />
     )
   }
+  const filterItem = (event) =>{
+    var querY = event.nativeEvent.text;
+    const [query] = useState(querY)
+  }
 
   return (
 
     <>
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#ff5b77"/>
+        <View style={styles.header}>
+          <TextInput
+            placeholder = "Pesquisar produto..."
+            placeholderTextColor = "gray"
+            value = {query}
+            onChange = {() => filterItem()}
+            style={styles.input}
+          />
+        </View>
+      </View>
       <FlatList
         data={dataProducts}
         ItemSeparatorComponent={() => separetor()}
@@ -118,6 +136,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  header:{
+    height:50,
+    width:"100%",
+    backgroundColor:"#ff5b77",
+    justifyContent:'center',
+    alignContent:'center',
+    alignItems:'center'
+
+  },
+  input:{
+    height:80,
+    width:"90%",
+    backgroundColor:"#fff",
+    borderRadius: 10,
+    padding: 5,
+    paddingLeft: 10,
+  },
   Image: {
     width: 20,
     height: 23,
@@ -151,10 +186,20 @@ const styles = StyleSheet.create({
   dataContainer:{
     padding: 10,
     paddingTop: 5,
+    width: width - 100
     
   },
   title: {
     fontSize: 17,
+    fontWeight: "bold",
+    color: "#000"
+  },
+  description:{
+    fontSize:16,
+    color:"gray",
+  },
+  price:{
+    fontSize: 20,
     fontWeight: "bold",
     color: "#000"
   }
