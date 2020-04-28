@@ -16,11 +16,11 @@ import {
 import addImage from '../../assets/plusCategory.png';
 import * as firebase from 'firebase';
 
-const {width,height} = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 
 const Home = ({ navigation }) => {
-  
+
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [dataProducts, setDataProducts] = useState([]);
   const [query, setQuery] = useState(null);
@@ -80,12 +80,12 @@ const Home = ({ navigation }) => {
 
     <>
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#ff5b77"/>
+        <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
         <View style={styles.header}>
           <TextInput
-            placeholder = "Pesquisar produto..."
-            placeholderTextColor = "gray"
-            value = {query}
+            placeholder="Pesquisar produto..."
+            placeholderTextColor="gray"
+            value={query}
             style={styles.input}
           />
         </View>
@@ -94,8 +94,9 @@ const Home = ({ navigation }) => {
         data={dataProducts}
         ItemSeparatorComponent={() => separetor()}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) =>
-          <TouchableOpacity onLongPress={() => deleteItemById(item.id)}>
+        renderItem={({ item }) => {
+          return (
+
             <View style={styles.productContainer}>
               <Image
                 style={styles.image}
@@ -107,10 +108,10 @@ const Home = ({ navigation }) => {
                 <Text style={styles.price}>{item.valor}</Text>
               </View>
 
-            </View>
-          </TouchableOpacity>
+            </View>)
 
-        }
+
+        }}
 
       />
 
@@ -131,19 +132,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header:{
-    height:50,
-    width:"100%",
-    backgroundColor:"#ff5b77",
-    justifyContent:'center',
-    alignContent:'center',
-    alignItems:'center'
+  header: {
+    height: 50,
+    width: "100%",
+    backgroundColor: "#ff5b77",
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center'
 
   },
-  input:{
-    height:30,
-    width:"90%",
-    backgroundColor:"#fff",
+  input: {
+    height: 30,
+    width: "90%",
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 5,
     paddingLeft: 10,
@@ -174,22 +175,22 @@ const styles = StyleSheet.create({
     height: 120,
     width: 120,
   },
-  dataContainer:{
+  dataContainer: {
     padding: 10,
     paddingTop: 5,
     width: width - 100
-    
+
   },
   title: {
     fontSize: 17,
     fontWeight: "bold",
     color: "#000"
   },
-  description:{
-    fontSize:16,
-    color:"gray",
+  description: {
+    fontSize: 16,
+    color: "gray",
   },
-  price:{
+  price: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#000"
