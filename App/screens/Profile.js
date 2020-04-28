@@ -296,7 +296,7 @@ export default function Profile({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#694fad',
+        backgroundColor: '#ff5b77',
         alignItems: 'center',
     },
     lottie: {

@@ -1,3 +1,243 @@
+import React, { Component } from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  StatusBar,
+  TextInput,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  Alert
+} from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import * as firebase from 'firebase';
+const { width, height } = Dimensions.get('window');
+
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      query: null,
+      dataSource: [],
+      dataBackup: [],
+      loading: true,
+      dataProducts: [],
+
+    };
+  }
+
+  //Alert to confirm add item to wallet
+  AlertBuilding() {
+    Alert.alert(
+      'Página em construção',
+      'Página de detalhes do produto em construção!',
+      [
+        { text: 'Fechar', style: 'cancel' },
+      ],
+      { cancelable: false }
+    )
+
+  }
+  //add item to wallet 
+  handleAddItembyId(id) {
+
+  }
+
+  //Alert to confirm add item to wallet
+  addItemWalletById(id) {
+    Alert.alert(
+      'Adicionar o cupom a carteira?',
+      'O desconto será adicionado a sua carteira de cupons!',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Confirmar', onPress: () => this.handleAddItembyId(id) },
+      ],
+      { cancelable: false }
+    )
+
+  }
+  //get data from firestorage
+  getDataFireStorage() {
+    firebase.firestore()
+      .collection('products')
+      .onSnapshot(querySnapshot => {
+        const list = [];
+        querySnapshot.forEach(doc => {
+          const { descricao, img, produto, valor } = doc.data();
+          list.push({
+            id: doc.id,
+            descricao,
+            img,
+            produto,
+            valor
+          });
+        });
+
+        this.setState({
+          dataProducts: list
+        })
+
+        if (this.loading) {
+          setLoading(false);
+        }
+      });
+
+  }
+
+  componentDidMount() {
+    this.getDataFireStorage();
+
+    this.setState({
+      dataBackup: this.dataProducts,
+      dataSource: this.dataProducts,
+    });
+  }
+
+  filterItem = event => {
+    var query = event.nativeEvent.text;
+    this.setState({
+      query: query,
+    });
+    if (query == '') {
+      this.setState({
+        dataSource: this.state.dataBackup,
+      });
+    } else {
+      var data = this.state.dataBackup;
+      query = query.toLowerCase();
+      console.log(query)
+      data = data.filter(l => l.produto.toLowerCase().match(query));
+      this.setState({
+        dataSource: this.dataProducts,
+      });
+    }
+  };
+
+  separator = () => {
+    return (
+      <View style={{ height: 5, width: '100%', backgroundColor: '#e5e5e5' }} />
+    );
+  };
+
+  render() {
+    console.disableYellowBox = true;
+    return (
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Desconto Fácil App</Text>
+        </View>
+        <View style={styles.header}>
+          <TextInput
+            placeholder="Enter Text..."
+            placeholderTextColor="gray"
+            value={this.state.query}
+            onChange={this.filterItem.bind(this)}
+            style={styles.input}
+          />
+        </View>
+        <FlatList
+          data={this.state.dataProducts}
+          ItemSeparatorComponent={() => this.separator()}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity onLongPress={() => this.addItemWalletById(item.id)} onPress={() => { this.AlertBuilding()}}>
+                <View style={styles.productContainer}>
+                  <Image
+                    resizeMode="contain"
+                    style={styles.image}
+                    source={{ uri: item.img }}
+                  />
+                  <View style={styles.dataContainer}>
+                    <Text numberOfLines={1} style={styles.title}>
+                      {item.produto}
+                    </Text>
+                    <Text numberOfLines={8} style={styles.description}>
+                      {item.descricao}
+                    </Text>
+                    <Text style={styles.price}>{item.valor}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  header: {
+    height: 60,
+    width: '100%',
+    backgroundColor: '#ff5b77',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "500",
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  input: {
+    height: 40,
+    width: '90%',
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 5,
+    paddingLeft: 10,
+  },
+  productContainer: {
+    flexDirection: 'row',
+    padding: 5,
+  },
+  image: {
+    height: 150,
+    width: 90,
+  },
+  dataContainer: {
+    padding: 7,
+    paddingTop: 5,
+    width: width - 100,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000"
+  },
+  description: {
+    fontSize: 14,
+    color: 'gray',
+    textAlign: 'justify',
+  },
+  price: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000"
+  },
+});
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -12,6 +252,8 @@ import {
   StatusBar,
   Dimensions,
   useCallback,
+  Modal,
+  Icon
 } from 'react-native';
 import addImage from '../../assets/plusCategory.png';
 import * as firebase from 'firebase';
@@ -24,6 +266,7 @@ const Home = ({ navigation }) => {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [dataProducts, setDataProducts] = useState([]);
   const [query, setQuery] = useState(null);
+  const [modalVisible, setmodalVisible] = useState(false);
 
   useEffect(() => {
 
@@ -52,10 +295,10 @@ const Home = ({ navigation }) => {
   }, []);
 
 
-  function deleteItemById(id) {
+  function addItemWalletById(id) {
     Alert.alert(
-      'Deseja apagar essa troca?',
-      'Está ação não pode ser desfeita!',
+      'Adicionar o cupom a carteira?',
+      'O desconto será adicionado a sua carteira de cupons!',
       [
         { text: 'Cancelar', style: 'cancel' },
         { text: 'Confirmar', onPress: () => handleDelete(id) },
@@ -72,7 +315,7 @@ const Home = ({ navigation }) => {
 
   const separetor = () => {
     return (
-      <View style={{ height: 10, width: "180%", backgroundColor: "#e5e5e5" }} />
+      <View style={{ height: 5, width: "180%", backgroundColor: "#e5e5e5" }} />
     )
   }
 
@@ -92,31 +335,34 @@ const Home = ({ navigation }) => {
             style={styles.input}
           />
         </View>
+        <View style={styles.flatContainer}>
+          <FlatList
+            data={dataProducts}
+            ItemSeparatorComponent={() => separetor()}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity onLongPress={() => addItemWalletById(item.id)} onPress={() => { navigation.push('productInfo') }}>
 
-        <FlatList
-          data={dataProducts}
-          ItemSeparatorComponent={() => separetor()}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
+                  <View style={styles.productContainer}>
+                    <Image
+                      resizeMode="contain"
+                      style={styles.image}
+                      source={{ uri: item.img }}
+                    />
+                    <View resizeMode="contain" style={styles.dataContainer}>
+                      <Text numberOfLines={1} style={styles.title}>{item.produto}</Text>
+                      <Text numberOfLines={6} style={styles.description} >{item.descricao}</Text>
+                      <Text style={styles.price}>{item.valor}</Text>
+                    </View>
 
-              <View style={styles.productContainer}>
-                <Image
-                  style={styles.image}
-                  source={{ uri: item.img }}
-                />
-                <View style={styles.dataContainer}>
-                  <Text numberOfLines={1} style={styles.title}>{item.produto}</Text>
-                  <Text numberOfLines={5} style={styles.description} >{item.descricao}</Text>
-                  <Text style={styles.price}>{item.valor}</Text>
-                </View>
+                  </View>
+                </TouchableOpacity>
+              )
+            }}
 
-              </View>)
-
-
-          }}
-
-        />
+          />
+        </View>
       </View>
       <View>
         <TouchableOpacity style={styles.addButton}>
@@ -125,7 +371,6 @@ const Home = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       </View>
-
     </>
   );
 }
@@ -135,6 +380,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    flexGrow: 1,
   },
   header: {
     height: 50,
@@ -148,7 +394,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: "500",
-    color:"#fff",
+    color: "#fff",
     fontWeight: "bold",
   },
   input: {
@@ -182,8 +428,9 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   image: {
-    height: 120,
-    width: 120,
+    height: 100,
+    width: 100,
+    alignSelf: "center"
   },
   dataContainer: {
     padding: 10,
@@ -192,19 +439,23 @@ const styles = StyleSheet.create({
 
   },
   title: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#000"
   },
   description: {
     fontSize: 12,
     color: "gray",
+    textAlign: 'justify',
+    flexShrink: 1
   },
   price: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#000"
   }
 });
 
 export default Home;
+
+*/

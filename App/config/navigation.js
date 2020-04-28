@@ -11,6 +11,7 @@ import Loading from "../screens/Loading";
 import HomeScreen from "../screens/Home";
 import ProfileScreen from "../screens/Profile";
 import WalletScreen from "../screens/Wallet";
+import ProductScreen from "../screens/productInfo";
 
 import "firebase/auth";
 import * as firebase from 'firebase'
@@ -18,20 +19,7 @@ import * as firebase from 'firebase'
 const AppTabs = createBottomTabNavigator();
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const WalletStack = createStackNavigator();
-
-const WalletStackScreen = () => (
-  <WalletStack.Navigator>
-    <WalletStack.Screen
-      name="Wallet"
-      component={WalletScreen}
-      options={{
-        headerTitle: "Meus Cupons"
-      }}
-    />
-    
-  </WalletStack.Navigator>
-);
+const ProductInfoStack = createStackNavigator();
 
 //Tab Navigator
 
@@ -52,7 +40,7 @@ const AppTabsScreen = () => (
 
     <AppTabs.Screen
       name="wallet"
-      component={WalletStackScreen}
+      component={WalletScreen}
       options={{
         tabBarLabel: 'Carteira',
         tabBarIcon: props => (
@@ -86,6 +74,12 @@ const AuthStackScreen = () => (
   <AuthStack.Navigator>
     <AuthStack.Screen name="Login" component={LoginScreen} />
   </AuthStack.Navigator>
+);
+
+const ProductInfoStackScreen  = () => (
+  <ProductInfoStack.Navigator>
+    <ProductInfoStack.Screen name="productInfo" component={ProductScreen} />
+  </ProductInfoStack.Navigator>
 );
 
 
