@@ -112,7 +112,7 @@ export default class Home extends Component {
       var data = this.state.dataBackup;
       query = query.toLowerCase();
       data = data.filter(l => l.produto.toLowerCase().match(query));
-
+      
       this.setState({
         dataSource: data,
       });
