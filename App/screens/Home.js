@@ -14,16 +14,17 @@ import { FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 const { width, height } = Dimensions.get('window');
 
-export default class App extends Component {
-  constructor() {
-    super();
+export default class Home extends Component {
+
+  constructor(props) {
+    super(props);
+
     this.state = {
       query: null,
       dataSource: [],
       dataBackup: [],
       loading: true,
-      data: [],
-
+      dataPd:[],
     };
   }
 
@@ -57,8 +58,8 @@ export default class App extends Component {
     )
 
   }
-  //get data from firestorage
-  getDataFireStorage() {
+  getFirebaseData() {
+    
     firebase.firestore()
       .collection('products')
       .onSnapshot(querySnapshot => {
@@ -72,29 +73,35 @@ export default class App extends Component {
             produto,
             valor
           });
+
         });
 
         this.setState({
-          data: list
+          dataPd: list,
         })
 
         if (this.loading) {
-          setLoading(false);
+          this.setState({
+            loading:false
+          })
         }
       });
-
   }
-
   componentDidMount() {
-    this.getDataFireStorage();
+    var data = [];
+    this.getFirebaseData();
+
+    data = this.dataPd;
 
     this.setState({
-      dataBackup: this.data,
-      dataSource: this.data,
-    });
+      dataBackup: data,
+      dataSource: data,
+    })
+
   }
 
   filterItem = event => {
+
     var query = event.nativeEvent.text;
     this.setState({
       query: query,
@@ -103,13 +110,14 @@ export default class App extends Component {
       this.setState({
         dataSource: this.state.dataBackup,
       });
+      console.log(dataSource);
     } else {
       var data = this.state.dataBackup;
       query = query.toLowerCase();
-      console.log(query)
       data = data.filter(l => l.produto.toLowerCase().match(query));
+
       this.setState({
-        dataSource: this.data,
+        dataSource: data,
       });
     }
   };
@@ -148,7 +156,7 @@ export default class App extends Component {
           </View>
         </View>
         <FlatList
-          data={this.state.data}
+          data={this.state.dataPd}
           ItemSeparatorComponent={() => this.separator()}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
