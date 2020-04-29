@@ -22,7 +22,7 @@ export default class App extends Component {
       dataSource: [],
       dataBackup: [],
       loading: true,
-      dataProducts: [],
+      data: [],
 
     };
   }
@@ -75,7 +75,7 @@ export default class App extends Component {
         });
 
         this.setState({
-          dataProducts: list
+          data: list
         })
 
         if (this.loading) {
@@ -89,8 +89,8 @@ export default class App extends Component {
     this.getDataFireStorage();
 
     this.setState({
-      dataBackup: this.dataProducts,
-      dataSource: this.dataProducts,
+      dataBackup: this.data,
+      dataSource: this.data,
     });
   }
 
@@ -109,7 +109,7 @@ export default class App extends Component {
       console.log(query)
       data = data.filter(l => l.produto.toLowerCase().match(query));
       this.setState({
-        dataSource: this.dataProducts,
+        dataSource: this.data,
       });
     }
   };
@@ -129,21 +129,31 @@ export default class App extends Component {
           <Text style={styles.headerTitle}>Desconto Fácil App</Text>
         </View>
         <View style={styles.header}>
-          <TextInput
-            placeholder="Enter Text..."
-            placeholderTextColor="gray"
-            value={this.state.query}
-            onChange={this.filterItem.bind(this)}
-            style={styles.input}
-          />
+          <View style={styles.SectionStyle}>
+            <Image
+              //We are showing the Image from online
+              source={{ uri: 'https://img.icons8.com/ios/100/000000/search--v1.png', }}
+              //Image Style
+              style={styles.ImageStyle}
+            />
+
+            <TextInput
+              underlineColorAndroid="transparent"
+              placeholder="O que procura..."
+              placeholderTextColor="gray"
+              value={this.state.query}
+              onChange={this.filterItem.bind(this)}
+              style={styles.input}
+            />
+          </View>
         </View>
         <FlatList
-          data={this.state.dataProducts}
+          data={this.state.data}
           ItemSeparatorComponent={() => this.separator()}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity onLongPress={() => this.addItemWalletById(item.id)} onPress={() => { this.AlertBuilding()}}>
+              <TouchableOpacity onLongPress={() => this.addItemWalletById(item.id)} onPress={() => { this.AlertBuilding() }}>
                 <View style={styles.productContainer}>
                   <Image
                     resizeMode="contain"
@@ -196,16 +206,35 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 10,
   },
+  SectionStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    height: 40,
+    borderRadius: 20,
+    margin: 10,
+  },
+
+  ImageStyle: {
+    padding: 10,
+    margin: 5,
+    height: 25,
+    width: 25,
+    resizeMode: 'stretch',
+    alignItems: 'center',
+  },
   productContainer: {
     flexDirection: 'row',
-    padding: 5,
+    padding: 2,
   },
   image: {
     height: 150,
     width: 90,
+    alignSelf: "center"
   },
   dataContainer: {
-    padding: 7,
+    padding: 5,
     paddingTop: 5,
     width: width - 100,
   },
@@ -264,7 +293,7 @@ const { width, height } = Dimensions.get("window");
 const Home = ({ navigation }) => {
 
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
-  const [dataProducts, setDataProducts] = useState([]);
+  const [data, setdata] = useState([]);
   const [query, setQuery] = useState(null);
   const [modalVisible, setmodalVisible] = useState(false);
 
@@ -285,7 +314,7 @@ const Home = ({ navigation }) => {
           });
         });
 
-        setDataProducts(list);
+        setdata(list);
 
         if (loading) {
           setLoading(false);
@@ -337,7 +366,7 @@ const Home = ({ navigation }) => {
         </View>
         <View style={styles.flatContainer}>
           <FlatList
-            data={dataProducts}
+            data={data}
             ItemSeparatorComponent={() => separetor()}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
