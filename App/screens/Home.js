@@ -88,14 +88,11 @@ export default class Home extends Component {
       });
   }
   componentDidMount() {
-    var data = [];
+
     this.getFirebaseData();
-
-    data = this.dataPd;
-
     this.setState({
-      dataBackup: data,
-      dataSource: data,
+      dataBackup: this.dataPd,
+      dataSource: this.dataPd,
     })
 
   }
