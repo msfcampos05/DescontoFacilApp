@@ -129,7 +129,6 @@ export default function Profile({ navigation }) {
                         name: nam,
                         tel: tell,
                         cargo: carg,
-                        innew:true
                     })
                     .then(function () {
 

@@ -20,6 +20,26 @@ const AppTabs = createBottomTabNavigator();
 const RootStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const ProductInfoStack = createStackNavigator();
+const HomeStack = createStackNavigator();
+
+const HomeStackScreen = () => (
+  <HomeStack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}>
+    <HomeStack.Screen
+      name="Home"
+      component={HomeScreen}
+    />
+    <HomeStack.Screen
+      name="ProductDetails"
+      component={ProductScreen}
+      options={{
+        headerTitle: "Detalhes"
+      }}
+    />
+  </HomeStack.Navigator>
+);
 
 //Tab Navigator
 
@@ -29,7 +49,7 @@ const AppTabsScreen = () => (
 
     <AppTabs.Screen
       name="home"
-      component={HomeScreen}
+      component={HomeStackScreen}
       options={{
         tabBarLabel: 'Início',
         tabBarIcon: props => (
@@ -55,7 +75,7 @@ const AppTabsScreen = () => (
       options={{
         tabBarLabel: 'Perfil',
         tabBarIcon: props => (
-          
+
           <Ionicons
             name="md-person"
             size={props.size}
@@ -76,7 +96,7 @@ const AuthStackScreen = () => (
   </AuthStack.Navigator>
 );
 
-const ProductInfoStackScreen  = () => (
+const ProductInfoStackScreen = () => (
   <ProductInfoStack.Navigator>
     <ProductInfoStack.Screen name="productInfo" component={ProductScreen} />
   </ProductInfoStack.Navigator>
@@ -88,7 +108,7 @@ const RootStackScreen = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [user, setUser] = React.useState(null);
 
-  firebase.auth().onAuthStateChanged(function(user) {
+  firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       setUser(user)
     } else {
@@ -113,8 +133,8 @@ const RootStackScreen = () => {
       ) : user ? (
         <RootStack.Screen name="AppTabsScreen" component={AppTabsScreen} />
       ) : (
-        <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
-      )}
+            <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
+          )}
 
     </RootStack.Navigator>
   );

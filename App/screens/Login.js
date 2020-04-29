@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect, Component } from 'react';
 
 import {
@@ -38,6 +35,102 @@ export default ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [secondTextInput, setsecondTextInput] = useState();
+
+  //Google sing functions
+  const isUserEqual = (googleUser, firebaseUser) => {
+    if (firebaseUser) {
+      var providerData = firebaseUser.providerData;
+      for (var i = 0; i < providerData.length; i++) {
+        if (
+          providerData[i].providerId ===
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+          providerData[i].uid === googleUser.getBasicProfile().getId()
+        ) {
+          // We don't need to reauth the Firebase connection.
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  const onSignIn = googleUser => {
+    console.log('Google Auth Response', googleUser);
+    // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+    var unsubscribe = firebase.auth().onAuthStateChanged(
+      function (firebaseUser) {
+        unsubscribe();
+        // Check if we are already signed-in Firebase with the correct user.
+        if (!isUserEqual(googleUser, firebaseUser)) {
+          // Build Firebase credential with the Google ID token.
+          var credential = firebase.auth.GoogleAuthProvider.credential(
+            googleUser.idToken,
+            googleUser.accessToken
+          );
+          // Sign in with credential from the Google user.
+          firebase
+            .auth()
+            .signInAndRetrieveDataWithCredential(credential)
+            .then(function (result) {
+              console.log('user signed in ');
+              if (result.additionalUserInfo.isNewUser) {
+                firebase.firestore()
+                  .collection("users")
+                  .doc(firebase.auth().currentUser.uid)
+                  .collection("profile")
+                  .doc("personal")
+                  .set({
+                    email: result.user.email,
+                    tel: '',
+                    endereco: '',
+                    name: result.additionalUserInfo.profile.given_name + ' ' + result.additionalUserInfo.profile.family_name,
+                  })
+                  .then(function (snapshot) {
+                    // console.log('Snapshot', snapshot);
+                  });
+              } else {
+                firebase
+                  .database()
+                  .ref('/users/' + result.user.uid)
+                  .update({
+                    last_logged_in: Date.now()
+                  });
+              }
+            })
+            .catch(function (error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // The email of the user's account used.
+              var email = error.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = error.credential;
+              // ...
+            });
+        } else {
+          console.log('User already signed-in Firebase.');
+        }
+      }
+    );
+  };
+  const signInWithGoogleAsync = async () => {
+    try {
+      const result = await Expo.Google.logInAsync({
+        // androidClientId: YOUR_CLIENT_ID_HERE,
+        behavior: 'web',
+        iosClientId: '', //enter ios client id
+        scopes: ['profile', 'email']
+      });
+
+      if (result.type === 'success') {
+        onSignIn(result);
+        return result.accessToken;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  };
 
   //Alerta padrao recebe mensagem e mostra alerta (evita várias chamadas desnecessárias do mesmo alerta)
   const alertDefault = (type) => {
@@ -186,6 +279,12 @@ export default ({ navigation }) => {
           <Text style={styles.buttonTextf}>Esqueçeu sua senha? Clique Aqui!</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          style={styles.buttonf2}
+
+        >
+          <Text style={styles.buttonTextf}>Entre com sua conta Google</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={handleSubmit}
           style={styles.button}
         >
@@ -244,12 +343,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 40
   },
-
   buttonf: {
     height: 38,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 40
+    borderRadius: 40,
+  },
+  buttonf2: {
+    height: 38,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 40,
+    borderWidth:0.5,
+    marginBottom:10
   },
   buttonText: {
     color: '#FFF',

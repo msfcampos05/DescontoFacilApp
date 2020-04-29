@@ -129,6 +129,7 @@ export default class Home extends Component {
   };
 
   render() {
+    const { navigation } = this.props;
     console.disableYellowBox = true;
     return (
       <View style={styles.container}>
@@ -161,7 +162,7 @@ export default class Home extends Component {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity onLongPress={() => this.addItemWalletById(item.id)} onPress={() => { this.AlertBuilding() }}>
+              <TouchableOpacity onLongPress={() => this.addItemWalletById(item.id)} onPress={() => { navigation.push('ProductDetails')}}>
                 <View style={styles.productContainer}>
                   <Image
                     resizeMode="contain"
