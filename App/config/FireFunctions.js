@@ -12,10 +12,10 @@ class FireFunctions {
                 .collection("products")
                 .doc(Date.now())
                 .add({
-                    text,
-                    uid: this.uid,
-                    timestamp: this.timestamp,
-                    image: remoteUri
+                    produto: text,
+                    descicao: this.uid,
+                    valor: 'R$ 30000',
+                    img: remoteUri
                 })
                 .then(ref => {
                     res(ref);
