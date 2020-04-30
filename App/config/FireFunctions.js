@@ -1,5 +1,6 @@
 
 import * as firebase from 'firebase'
+var moment = require('moment');
 
 class FireFunctions {
     
@@ -10,13 +11,13 @@ class FireFunctions {
         return new Promise((res, rej) => {
             this.firestore
                 .collection("products")
-                .doc(Date.now())
+                .doc(this.timestamp())
                 .add({
                     produto: text,
                     descicao:'',
-                    valor:'',
+                    valor:Date.now(),
                     img: remoteUri,
-                    validade:''
+                    validade:this.timestamp
                 })
                 .then(ref => {
                     res(ref);
@@ -62,7 +63,7 @@ class FireFunctions {
     }
 
     get timestamp() {
-        return Date.now();
+        return moment().format();
     }
 }
 
