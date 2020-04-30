@@ -42,18 +42,25 @@ export default class Home extends Component {
 
   }
   //add item to wallet 
-  handleAddItembyId(id) {
-
+  handledeleteItembyId(id) {
+    firebase.firestore()
+      .collection("products")
+      .doc(id)
+      .delete().then(function () {
+        console.log("Document successfully deleted!");
+      }).catch(function (error) {
+        console.error("Error removing document: ", error);
+      });
   }
 
   //Alert to confirm add item to wallet
   addItemWalletById(id) {
     Alert.alert(
-      'Adicionar o cupom a carteira?',
-      'O desconto será adicionado a sua carteira de cupons!',
+      'Deseja excuir o cupom?',
+      'Esta ação não pode ser desfeita!',
       [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Confirmar', onPress: () => this.handleAddItembyId(id) },
+        { text: 'Confirmar', onPress: () => this. handledeleteItembyId(id) },
       ],
       { cancelable: false }
     )
