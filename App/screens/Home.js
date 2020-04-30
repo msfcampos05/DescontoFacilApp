@@ -89,7 +89,6 @@ export default class Home extends Component {
       });
   }
   componentDidMount() {
-
     this.getFirebaseData();
     this.setState({
       dataBackup: this.dataPd,
