@@ -33,7 +33,7 @@ export default class addProductScreen extends React.Component {
             .addPost({ text: this.state.text.trim(), localUri: this.state.image })
             .then(ref => {
                 this.setState({ text: "", image: null });
-                this.props.navigation.goBack();
+                this.props.navigation.push('Home');
             })
             .catch(error => {
                 alert(error);
