@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         margin: 32,
-        flexDirection: 'column'
+        flexDirection: '"row"'
     },
     TextInput:{
         borderRadius:20,
