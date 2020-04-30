@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import 'react-native-gesture-handler';
 
+//import de telas 
 import LoginScreen from "../screens/Login";
 import Loading from "../screens/Loading";
 import HomeScreen from "../screens/Home";
@@ -14,6 +15,7 @@ import WalletScreen from "../screens/Wallet";
 import ProductScreen from "../screens/productInfo";
 import addProductsScreem from "../screens/addProduct";
 
+//instancia do firebase
 import "firebase/auth";
 import * as firebase from 'firebase'
 
@@ -98,13 +100,6 @@ const AuthStackScreen = () => (
   </AuthStack.Navigator>
 );
 
-const ProductInfoStackScreen = () => (
-  <ProductInfoStack.Navigator>
-    <ProductInfoStack.Screen name="productInfo" component={ProductScreen} />
-  </ProductInfoStack.Navigator>
-);
-
-
 
 const RootStackScreen = () => {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -135,7 +130,7 @@ const RootStackScreen = () => {
       ) : user ? (
         <RootStack.Screen name="AppTabsScreen" component={AppTabsScreen} />
       ) : (
-            <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
+        <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
           )}
 
     </RootStack.Navigator>

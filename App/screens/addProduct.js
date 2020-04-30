@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, TextInput, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, TextInput, Image, Button } from "react-native";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,8 +11,8 @@ import * as ImagePicker from "expo-image-picker";
 export default class addProductScreen extends React.Component {
     state = {
         text: "",
-        description:"",
-        price:"",
+        description: "",
+        price: "",
         image: null
     };
 
@@ -32,7 +32,7 @@ export default class addProductScreen extends React.Component {
 
     handlePost = () => {
         FireFunctions.shared
-            .addPost({ text: this.state.text.trim(),price: this.state.price.trim(),description: this.state.description.trim(), localUri: this.state.image })
+            .addPost({ text: this.state.text.trim(), price: this.state.price.trim(), description: this.state.description.trim(), localUri: this.state.image })
             .then(ref => {
                 this.setState({ text: "", image: null });
                 this.props.navigation.push('Home');
@@ -57,54 +57,56 @@ export default class addProductScreen extends React.Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                        <Ionicons name="md-arrow-back" size={24} color="#D8D9DB"></Ionicons>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.handlePost}>
-                        <Text style={{ fontWeight: "500" }}>Post</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <Image source={{ uri: firebase.auth().currentUser.photoURL }} style={styles.avatar}></Image>
-                    <TextInput
-                        style={styles.TextInput}
-                        autoFocus={true}
-                        multiline={true}
-                        numberOfLines={4}
-                        style={{ flex: 1 }}
-                        placeholder="Nome do produto"
-                        onChangeText={text => this.setState({ text })}
-                        value={this.state.text}
-                    ></TextInput>
-                    <TextInput
-                        style={styles.TextInput}
-                        multiline={true}
-                        numberOfLines={4}
-                        style={{ flex: 1 }}
-                        placeholder="Valor do produto"
-                        onChangeText={price => this.setState({ price })}
-                        value={this.state.price}
-                    ></TextInput>
-                    <TextInput
-                        style={styles.TextInput}
-                        autoCorrect={false}
-                        multiline={true}
-                        numberOfLines={4}
-                        style={{ flex: 1 }}
-                        placeholder="Descrição do produto"
-                        onChangeText={description => this.setState({ description })}
-                        value={this.state.description}
-                    ></TextInput>
-                </View>
-
-                <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-                    <Ionicons name="md-camera" size={32} color="#D8D9DB"></Ionicons>
-                </TouchableOpacity>
-
-                <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
-                    <Image source={{ uri: this.state.image }} style={{ width: "100%", height: "100%" }}></Image>
+                <View style={styles.imageContainer}>
+                    <View>
+                        {this.state.image ? (
+                            <Image
+                                source={{ uri: this.state.image }}
+                                style={{ width: '100%', height: 300 }}
+                            />
+                        ) : (   <View style={styles.Button}>
+                                <Button
+                                    onPress={this.pickImage}
+                                    title='Add an image'>
+                                </Button>
+                                </View>
+                            )}
+                    </View>
+                    <View style={{ marginTop: 40, alignItems: 'center' }}>
+                        <Text style={styles.H4}>Detalhes do Produto</Text>
+                        <TextInput
+                            placeholder='Nome do produto'
+                            style={styles.textInput}
+                            value={this.state.text}
+                            onChangeText={text => this.setState({ text })}
+                        />
+                        <TextInput
+                            placeholder='Descrição do produto'
+                            style={styles.textInputDescription}
+                            multiline={true}
+                            numberOfLines={4}
+                            value={this.state.description}
+                            onChangeText={description => this.setState({ description })}
+                        />
+                        <TextInput
+                            placeholder='Valor'
+                            style={styles.textInput}
+                            value={this.state.price}
+                            onChangeText={price => this.setState({ price })}
+                        />
+                        <Button
+                            style={styles.ButtonSend}
+                            status='success'
+                            onPress={this.handlePost}
+                            disabled={
+                                this.state.image && this.state.text && this.state.description && this.state.price
+                                    ? false
+                                    : true
+                            }
+                            title='Cadastrar'
+                        >
+                        </Button>
+                    </View>
                 </View>
             </SafeAreaView>
         );
@@ -113,34 +115,40 @@ export default class addProductScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#fff'
     },
-    header: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingHorizontal: 32,
-        paddingVertical: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: "#D8D9DB"
+    textInput: {
+        margin: 20,
+        borderWidth: 1,
+        borderColor: '#DDD',
+        paddingHorizontal: 40,
+        fontSize: 16,
+        color: '#444',
+        height: 44,
+        marginBottom: 10,
+        borderRadius: 10
     },
-    inputContainer: {
-        margin: 32,
-        flexDirection: "row"
+    textInputDescription: {
+        margin: 20,
+        borderWidth: 1,
+        borderColor: '#DDD',
+        paddingHorizontal: 40,
+        fontSize: 16,
+        color: '#444',
+        height: 50,
+        marginBottom: 10,
+        borderRadius: 10
     },
-    TextInput:{
-        borderRadius:20,
-        borderColor:"#f56d",
-        borderWidth:0.25
+    imageContainer:{
+        marginTop: 40 
+    },
+    H4: {
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
+    Button: {
+        alignItems: 'center',
         
-    },
-    avatar: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        marginRight: 16
-    },
-    photo: {
-        alignItems: "flex-end",
-        marginHorizontal: 32
     }
 });

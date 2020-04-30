@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    backgroundColor: '#FFFCFC',
+    backgroundColor: '#ff5b77',
     elevation: 4,
     borderRadius: 100,
     height: 57,
