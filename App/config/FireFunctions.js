@@ -27,7 +27,7 @@ class FireFunctions {
     };
 
     uploadPhotoAsync = async uri => {
-        const path = `photos/${this.uid}/${Date.now()}.jpg`;
+        const path = `products/${this.uid}/${Date.now()}.jpg`;
 
         return new Promise(async (res, rej) => {
             const response = await fetch(uri);
