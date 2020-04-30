@@ -14,7 +14,7 @@ class FireFunctions {
                 .add({
                     produto: text,
                     descricao: description,
-                    valor:price,
+                    valor:'R$ '+ price,
                     img: remoteUri,
                 })
                 .then(ref => {
