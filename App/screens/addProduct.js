@@ -80,7 +80,6 @@ export default class addProductScreen extends React.Component {
                     ></TextInput>
                     <TextInput
                         style={styles.TextInput}
-                        autoFocus={true}
                         multiline={true}
                         numberOfLines={4}
                         style={{ flex: 1 }}
@@ -90,7 +89,6 @@ export default class addProductScreen extends React.Component {
                     ></TextInput>
                     <TextInput
                         style={styles.TextInput}
-                        autoFocus={true}
                         multiline={true}
                         numberOfLines={4}
                         style={{ flex: 1 }}

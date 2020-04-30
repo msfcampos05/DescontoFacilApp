@@ -13,7 +13,7 @@ class FireFunctions {
                 .collection("products")
                 .add({
                     produto: text,
-                    descicao:description,
+                    descricao: description,
                     valor:price,
                     img: remoteUri,
                 })
