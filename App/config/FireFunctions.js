@@ -10,7 +10,7 @@ class FireFunctions {
         return new Promise((res, rej) => {
             firebase.firestore()
                 .collection('products')
-                .doc(Date.now())
+                .doc('teste')
                 .add({
                     produto: text,
                     descicao: this.uid,
