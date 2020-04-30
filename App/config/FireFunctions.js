@@ -8,7 +8,7 @@ class FireFunctions {
         const remoteUri = await this.uploadPhotoAsync(localUri);
 
         return new Promise((res, rej) => {
-            this.firestore
+            firebase.firestore
                 .collection("products")
                 .doc(Date.now())
                 .add({
