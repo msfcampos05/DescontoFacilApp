@@ -137,7 +137,7 @@ export default class Home extends Component {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Desconto Fácil App</Text>
         </View>
-        
+
         <View style={styles.header}>
           <View style={styles.SectionStyle}>
             <Image
@@ -194,7 +194,13 @@ export default class Home extends Component {
             );
           }}
         />
-
+        <View>
+          <TouchableOpacity style={styles.addButton} onPress={()=> navigation.push('addProducts')}>
+            <View style={styles.ViewiButton}>
+              <Image style={styles.Image} source={addImage} />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -273,6 +279,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#000"
+  },
+  Image: {
+    width: 20,
+    height: 23,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  addButton: {
+    position: 'absolute',
+    backgroundColor: '#FFFCFC',
+    elevation: 4,
+    borderRadius: 100,
+    height: 57,
+    width: 58,
+    right: 15,
+    bottom: 30,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 });
 

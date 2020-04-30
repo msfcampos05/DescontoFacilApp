@@ -12,6 +12,7 @@ import HomeScreen from "../screens/Home";
 import ProfileScreen from "../screens/Profile";
 import WalletScreen from "../screens/Wallet";
 import ProductScreen from "../screens/productInfo";
+import addProductsScreem from "../screens/addProduct";
 
 import "firebase/auth";
 import * as firebase from 'firebase'
@@ -34,9 +35,10 @@ const HomeStackScreen = () => (
     <HomeStack.Screen
       name="ProductDetails"
       component={ProductScreen}
-      options={{
-        headerTitle: "Detalhes"
-      }}
+    />
+     <HomeStack.Screen
+      name="addProducts"
+      component={addProductsScreem}
     />
   </HomeStack.Navigator>
 );
