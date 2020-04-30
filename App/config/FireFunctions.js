@@ -9,7 +9,7 @@ class FireFunctions {
 
         return new Promise((res, rej) => {
             firebase.firestore()
-                .collection("products")
+                .collection('products')
                 .doc(Date.now())
                 .add({
                     produto: text,
