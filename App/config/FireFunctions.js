@@ -11,7 +11,6 @@ class FireFunctions {
         return new Promise((res, rej) => {
             this.firestore
                 .collection("products")
-                .doc(this.dataId)
                 .add({
                     produto: text,
                     descicao:'',

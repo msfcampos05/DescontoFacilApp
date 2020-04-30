@@ -11,6 +11,8 @@ import * as ImagePicker from "expo-image-picker";
 export default class addProductScreen extends React.Component {
     state = {
         text: "",
+        description:"",
+        price:"",
         image: null
     };
 
@@ -30,7 +32,7 @@ export default class addProductScreen extends React.Component {
 
     handlePost = () => {
         FireFunctions.shared
-            .addPost({ text: this.state.text.trim(), localUri: this.state.image })
+            .addPost({ text: this.state.text.trim(),price: this.state.price.trim(),description: this.state.description.trim(), localUri: this.state.image })
             .then(ref => {
                 this.setState({ text: "", image: null });
                 this.props.navigation.push('Home');
@@ -65,14 +67,35 @@ export default class addProductScreen extends React.Component {
                 </View>
 
                 <View style={styles.inputContainer}>
-                    <Image source={{uri: firebase.auth().currentUser.photoURL }} style={styles.avatar}></Image>
+                    <Image source={{ uri: firebase.auth().currentUser.photoURL }} style={styles.avatar}></Image>
                     <TextInput
+                        style={styles.TextInput}
                         autoFocus={true}
                         multiline={true}
                         numberOfLines={4}
                         style={{ flex: 1 }}
-                        placeholder="Want to share something?"
+                        placeholder="Nome do produto"
                         onChangeText={text => this.setState({ text })}
+                        value={this.state.text}
+                    ></TextInput>
+                    <TextInput
+                        style={styles.TextInput}
+                        autoFocus={true}
+                        multiline={true}
+                        numberOfLines={4}
+                        style={{ flex: 1 }}
+                        placeholder="Valor do produto"
+                        onChangeText={price => this.setState({ price })}
+                        value={this.state.text}
+                    ></TextInput>
+                    <TextInput
+                        style={styles.TextInput}
+                        autoFocus={true}
+                        multiline={true}
+                        numberOfLines={4}
+                        style={{ flex: 1 }}
+                        placeholder="Descrição do produto"
+                        onChangeText={description => this.setState({ description })}
                         value={this.state.text}
                     ></TextInput>
                 </View>
@@ -104,6 +127,10 @@ const styles = StyleSheet.create({
     inputContainer: {
         margin: 32,
         flexDirection: "row"
+    },
+    TextInput:{
+        borderRadius:20,
+        borderColor:"#f56d"
     },
     avatar: {
         width: 48,
