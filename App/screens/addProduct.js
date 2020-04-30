@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         margin: 32,
-        flexDirection: "row"
     },
     TextInput:{
         borderRadius:20,
-        borderColor:"#f56d"
+        borderColor:"#f56d",
+        borderWidth: 0.25
     },
     avatar: {
         width: 48,
