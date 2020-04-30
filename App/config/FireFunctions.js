@@ -2,20 +2,22 @@ import FirebaseKeys from "./firebase";
 import * as firebase from 'firebase'
 
 class FireFunctions {
-
+    
+    constructor() {
+        firebase.initializeApp(FirebaseKeys);
+    }
 
     addPost = async ({ text, localUri }) => {
         const remoteUri = await this.uploadPhotoAsync(localUri);
 
         return new Promise((res, rej) => {
-            firebase.firestore()
-                .collection('products')
-                .doc('teste')
+            this.firestore
+                .collection("posts")
                 .add({
-                    produto: text,
-                    descicao: this.uid,
-                    valor: 'R$30000',
-                    img: remoteUri
+                    text,
+                    uid: this.uid,
+                    timestamp: this.timestamp,
+                    image: remoteUri
                 })
                 .then(ref => {
                     res(ref);
@@ -27,7 +29,7 @@ class FireFunctions {
     };
 
     uploadPhotoAsync = async uri => {
-        const path = `products/${this.uid}/${Date.now()}.jpg`;
+        const path = `photos/${this.uid}/${Date.now()}.jpg`;
 
         return new Promise(async (res, rej) => {
             const response = await fetch(uri);
