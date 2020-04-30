@@ -11,6 +11,7 @@ import {
   Alert
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import addImage from '../../assets/plusCategory.png';
 import * as firebase from 'firebase';
 const { width, height } = Dimensions.get('window');
 
@@ -24,7 +25,7 @@ export default class Home extends Component {
       dataSource: [],
       dataBackup: [],
       loading: true,
-      dataPd:[],
+      dataPd: [],
     };
   }
 
@@ -59,7 +60,7 @@ export default class Home extends Component {
 
   }
   getFirebaseData() {
-    
+
     firebase.firestore()
       .collection('products')
       .onSnapshot(querySnapshot => {
@@ -82,7 +83,7 @@ export default class Home extends Component {
 
         if (this.loading) {
           this.setState({
-            loading:false
+            loading: false
           })
         }
       });
@@ -112,7 +113,7 @@ export default class Home extends Component {
       var data = this.state.dataBackup;
       query = query.toLowerCase();
       data = data.filter(l => l.produto.toLowerCase().match(query));
-      
+
       this.setState({
         dataSource: data,
       });
@@ -130,10 +131,13 @@ export default class Home extends Component {
     console.disableYellowBox = true;
     return (
       <View style={styles.container}>
+
         <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
+
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Desconto Fácil App</Text>
         </View>
+        
         <View style={styles.header}>
           <View style={styles.SectionStyle}>
             <Image
@@ -142,7 +146,6 @@ export default class Home extends Component {
               //Image Style
               style={styles.ImageStyle}
             />
-
             <TextInput
               underlineColorAndroid="transparent"
               placeholder="O que procura..."
@@ -153,13 +156,24 @@ export default class Home extends Component {
             />
           </View>
         </View>
+
         <FlatList
           data={this.state.dataPd}
           ItemSeparatorComponent={() => this.separator()}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity onLongPress={() => this.addItemWalletById(item.id)} onPress={() => { navigation.push('ProductDetails')}}>
+              <TouchableOpacity
+                onLongPress={() => this.addItemWalletById(item.id)}
+                onPress={() => {
+                  navigation.push('ProductDetails', {
+                    itemId: item.id,
+                    itemName: item.produto,
+                    itemPrice: item.valor,
+                    itemImg: item.img,
+                    itemDescription: item.descricao,
+                  })
+                }}>
                 <View style={styles.productContainer}>
                   <Image
                     resizeMode="contain"
@@ -180,6 +194,7 @@ export default class Home extends Component {
             );
           }}
         />
+
       </View>
     );
   }

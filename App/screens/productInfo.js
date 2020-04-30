@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,46 +12,43 @@ import {
   StatusBar
 } from 'react-native';
 
-export default class ProductDetail extends Component {
+function DetailsScreen({ route, navigation }) {
 
-  constructor(props) {
-    super(props);
-  }
+  /* 2. Get the param */
+  const { itemId } = route.params;
+  const { itemName } = route.params;
+  const { itemPrice } = route.params;
+  const { itemDescription } = route.params;
+  const { itemImg } = route.params;
 
-  clickEventListener() {
+  function clickEventListener() {
     Alert.alert("Sucesso", "Cupom adicionado a carteira")
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Desconto Fácil App</Text>
-        </View>
-        <ScrollView>
-          <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
-            <Image style={styles.productImg} source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3v7KDJN7TAoJa5sFaPWcp1HX8JFcpF3z5K3ngz4L6kWoEP7Ca" }} />
-            <Text style={styles.name}>Super Soft T-Shirt</Text>
-            <Text style={styles.price}>$ 12.22</Text>
-            <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-              Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-              natoque penatibus et magnis dis parturient montes,
-              nascetur ridiculus mus. Donec quam felis, ultricies nec
-            </Text>
-          </View>
-          <View style={styles.separator}></View>
-          <View style={styles.addToCarContainer}>
-            <TouchableOpacity style={styles.shareButton} onPress={() => this.clickEventListener()}>
-              <Text style={styles.shareButtonText}>Adicionar a Carteira</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Desconto Fácil App</Text>
       </View>
-    );
-  }
+      <ScrollView>
+        <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
+          <Image resizeMode="contain" style={styles.productImg} source={{ uri: itemImg}} />
+          <Text style={styles.name}>{(itemName)}</Text>
+          <Text style={styles.price}>{(itemPrice)}</Text>
+          <Text style={styles.description}>{(itemDescription)}</Text>
+        </View>
+        <View style={styles.separator}></View>
+        <View style={styles.addToCarContainer}>
+          <TouchableOpacity style={styles.shareButton} onPress={clickEventListener}>
+            <Text style={styles.shareButtonText}>Adicionar a Carteira</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
+  );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -114,4 +111,6 @@ const styles = StyleSheet.create({
   addToCarContainer: {
     marginHorizontal: 30
   }
-});     
+});
+
+export default DetailsScreen;
