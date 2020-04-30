@@ -5,7 +5,7 @@ var moment = require('moment');
 class FireFunctions {
     
 
-    addPost = async ({ text, localUri }) => {
+    addPost = async ({ text, price, description, localUri }) => {
         const remoteUri = await this.uploadPhotoAsync(localUri);
 
         return new Promise((res, rej) => {
@@ -13,10 +13,9 @@ class FireFunctions {
                 .collection("products")
                 .add({
                     produto: text,
-                    descicao:'',
-                    valor:'',
+                    descicao:description,
+                    valor:price,
                     img: remoteUri,
-                    validade:this.dataId
                 })
                 .then(ref => {
                     res(ref);
@@ -62,8 +61,7 @@ class FireFunctions {
     }
 
     get timestamp() {
-        var dataId = '';
-        dataId = moment().format();
+
         return dataId;
     }
 }
