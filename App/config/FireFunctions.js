@@ -11,13 +11,13 @@ class FireFunctions {
         return new Promise((res, rej) => {
             this.firestore
                 .collection("products")
-                .doc(this.timestamp)
+                .doc(this.dataId)
                 .add({
                     produto: text,
                     descicao:'',
-                    valor:Date.now(),
+                    valor:'',
                     img: remoteUri,
-                    validade:this.timestamp
+                    validade:this.dataId
                 })
                 .then(ref => {
                     res(ref);
@@ -63,7 +63,9 @@ class FireFunctions {
     }
 
     get timestamp() {
-        return moment().format();
+        var dataId = '';
+        dataId = moment().format();
+        return dataId;
     }
 }
 
