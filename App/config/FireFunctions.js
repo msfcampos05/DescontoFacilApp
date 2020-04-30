@@ -1,11 +1,8 @@
-import FirebaseKeys from "./firebase";
+
 import * as firebase from 'firebase'
 
 class FireFunctions {
     
-    constructor() {
-        firebase.initializeApp(FirebaseKeys);
-    }
 
     addPost = async ({ text, localUri }) => {
         const remoteUri = await this.uploadPhotoAsync(localUri);
