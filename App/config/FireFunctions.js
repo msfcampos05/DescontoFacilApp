@@ -9,12 +9,13 @@ class FireFunctions {
 
         return new Promise((res, rej) => {
             this.firestore
-                .collection("posts")
+                .collection("products")
                 .add({
-                    text,
-                    uid: this.uid,
-                    timestamp: this.timestamp,
-                    image: remoteUri
+                    produto: text,
+                    descicao:'',
+                    valor:'',
+                    img: remoteUri,
+                    validade:''
                 })
                 .then(ref => {
                     res(ref);
