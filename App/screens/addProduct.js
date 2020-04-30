@@ -86,7 +86,7 @@ export default class addProductScreen extends React.Component {
                         style={{ flex: 1 }}
                         placeholder="Valor do produto"
                         onChangeText={price => this.setState({ price })}
-                        value={this.state.text}
+                        value={this.state.price}
                     ></TextInput>
                     <TextInput
                         style={styles.TextInput}
@@ -96,7 +96,7 @@ export default class addProductScreen extends React.Component {
                         style={{ flex: 1 }}
                         placeholder="Descrição do produto"
                         onChangeText={description => this.setState({ description })}
-                        value={this.state.text}
+                        value={this.state.description}
                     ></TextInput>
                 </View>
 
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     TextInput:{
         borderRadius:20,
         borderColor:"#f56d",
-        borderWidth:0.5
+        borderWidth:0.25
         
     },
     avatar: {
