@@ -10,6 +10,7 @@ class FireFunctions {
         return new Promise((res, rej) => {
             this.firestore
                 .collection("products")
+                .doc(this.timestamp)
                 .add({
                     produto: text,
                     descicao:'',
