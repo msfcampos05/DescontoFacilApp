@@ -1,12 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, TextInput, Image, Button } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, TextInput, Image, Button,StatusBar } from "react-native";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { Ionicons } from "@expo/vector-icons";
 import FireFunctions from "../config/FireFunctions";
 import * as firebase from 'firebase'
 import * as ImagePicker from "expo-image-picker";
-
 
 export default class addProductScreen extends React.Component {
     state = {
@@ -56,59 +55,69 @@ export default class addProductScreen extends React.Component {
 
     render() {
         return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.imageContainer}>
-                    <View>
-                        {this.state.image ? (
-                            <Image
-                                source={{ uri: this.state.image }}
-                                style={{ width: '100%', height: 300 }}
-                            />
-                        ) : (   <View style={styles.Button}>
-                                <Button
-                                    onPress={this.pickImage}
-                                    title='Add an image'>
-                                </Button>
-                                </View>
-                            )}
-                    </View>
-                    <View style={{ marginTop: 40, alignItems: 'center' }}>
-                        <Text style={styles.H4}>Detalhes do Produto</Text>
-                        <TextInput
-                            placeholder='Nome do produto'
-                            style={styles.textInput}
-                            value={this.state.text}
-                            onChangeText={text => this.setState({ text })}
+          <>  
+            <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
+            <View style={styles.header}>
+                <Text style={styles.headerTitle}>Desconto Fácil App</Text>
+                
+            </View>
+            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+                <View>
+                {this.state.image ? (
+                        <Image
+                            source={{ uri: this.state.image }}
+                            style={{ width: '100%', height: 300 }}
                         />
-                        <TextInput
-                            placeholder='Descrição do produto'
-                            style={styles.textInputDescription}
-                            multiline={true}
-                            numberOfLines={4}
-                            value={this.state.description}
-                            onChangeText={description => this.setState({ description })}
-                        />
-                        <TextInput
-                            placeholder='Valor'
-                            style={styles.textInput}
-                            value={this.state.price}
-                            onChangeText={price => this.setState({ price })}
-                        />
+                    ) : (
+                        <TouchableOpacity onPress={this.pickImage}>
+                            <Image style={styles.ButtonImg} source={require('../../assets/add_p.png')}/>
+                        </TouchableOpacity>
+                        )}
+                
+                
+                <View style={styles.filds}>
+                    
+                       
+                    <Text style={styles.Tittle} >Adicionar um cupom de desconto</Text>
+                    
+                    <TextInput 
+                    style={styles.inputTittle} 
+                    placeholder="Titulo"
+                    value={this.state.text}
+                    onChangeText={text => this.setState({ text })} 
+                    />
+                    
+                    <TextInput 
+                    style={styles.inputDescription} 
+                    value={this.state.description}
+                    placeholder="Descrição" 
+                    onChangeText={description => this.setState({ description })}
+                    />
+                    
+                    <TextInput 
+                    style={styles.inputPrice} 
+                    placeholder="Valor"
+                    value={this.state.price}
+                    onChangeText={price => this.setState({ price })}
+                    />     
+                    
+                    <View style={styles.ButtonSend}>
                         <Button
-                            style={styles.ButtonSend}
                             status='success'
+                            title='Cadastrar'
                             onPress={this.handlePost}
                             disabled={
                                 this.state.image && this.state.text && this.state.description && this.state.price
                                     ? false
                                     : true
-                            }
-                            title='Cadastrar'
-                        >
+                        }>    
                         </Button>
+                        
                     </View>
                 </View>
-            </SafeAreaView>
+                </View>
+            </KeyboardAvoidingView>
+            </>
         );
     }
 }
@@ -116,39 +125,70 @@ export default class addProductScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        justifyContent:'center',
+        alignContent:'center' 
     },
-    textInput: {
-        margin: 20,
+    header: {
+        height: 60,
+        width: '100%',
+        backgroundColor: '#ff5b77',
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+      },
+      headerTitle: {
+        fontSize: 20,
+        fontWeight: "500",
+        color: "#fff",
+        fontWeight: "bold",
+      },
+    filds:{
+        alignSelf: 'stretch',
+        paddingHorizontal: 30,
+        marginBottom:40
+    },
+    Tittle:{
+        fontSize:20,
+        fontWeight:'bold',
+        alignSelf:'center',
+        marginBottom: 20
+    },
+    ButtonImg:{
+        marginBottom:100,
+        alignSelf:'center',
+        width: 100,
+        height:100
+    },
+    ButtonSend:{
+        marginTop:20
+    },
+    inputTittle:{
         borderWidth: 1,
         borderColor: '#DDD',
-        paddingHorizontal: 40,
+        paddingHorizontal: 10,
         fontSize: 16,
         color: '#444',
         height: 44,
         marginBottom: 10,
-        borderRadius: 10
     },
-    textInputDescription: {
-        margin: 20,
+    inputDescription:{
         borderWidth: 1,
         borderColor: '#DDD',
-        paddingHorizontal: 40,
+        paddingHorizontal: 10,
         fontSize: 16,
         color: '#444',
-        height: 50,
+        height: 44,
         marginBottom: 10,
-        borderRadius: 10
     },
-    imageContainer:{
-        marginTop: 40 
-    },
-    H4: {
-        fontSize: 20,
-        fontWeight: 'bold'
-    },
-    Button: {
-        alignItems: 'center',
-        
+    inputPrice:{
+        borderWidth: 1,
+        borderColor: '#DDD',
+        paddingHorizontal: 10,
+        fontSize: 16,
+        color: '#444',
+        height: 44,
+        marginBottom: 10,
     }
+    
 });
