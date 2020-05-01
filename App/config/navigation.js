@@ -14,6 +14,7 @@ import ProfileScreen from "../screens/Profile";
 import WalletScreen from "../screens/Wallet";
 import ProductScreen from "../screens/productInfo";
 import addProductsScreem from "../screens/addProduct";
+import SignUpScreen from '../screens/signUp';
 
 //instancia do firebase
 import "firebase/auth";
@@ -97,6 +98,7 @@ const AppTabsScreen = () => (
 const AuthStackScreen = () => (
   <AuthStack.Navigator>
     <AuthStack.Screen name="Login" component={LoginScreen} />
+    <AuthStack.Screen name="SignUp" component={SignUpScreen} />
   </AuthStack.Navigator>
 );
 

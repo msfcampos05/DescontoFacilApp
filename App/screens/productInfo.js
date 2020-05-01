@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import * as firebase from 'firebase';
 
-function DetailsScreen({ route, navigation }) {
+function DetailsScreen ({ route, navigation }) {
 
   /* 2. Get the param */
   const { itemId } = route.params;

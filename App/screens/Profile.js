@@ -190,10 +190,10 @@ export default function Profile({ navigation }) {
                 </TouchableOpacity>
 
                 <Text style={styles.Text}>
-                    Endereço: {users.cargo}
+                    Endereço: {users.adress}
                 </Text>
                 <Text style={styles.Text}>
-                    Telefone: {users.tel}
+                    Telefone: {users.phone}
                 </Text>
                 <Text style={styles.Text}>
                     Email: {user.email}

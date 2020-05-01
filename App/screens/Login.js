@@ -118,7 +118,6 @@ export default ({ navigation }) => {
     return (
       <View
         style={{
-
           flex: 1,
           alignContent: 'center',
           justifyContent: 'center',
@@ -141,8 +140,8 @@ export default ({ navigation }) => {
       style={styles.container}
     >
       <StatusBar
-        hidden={true}
-        backgroundColor='#694fad'
+        hidden={false}
+        backgroundColor='#f05a5b'
       />
 
       <Image style={styles.Image} source={logo} />
@@ -185,9 +184,9 @@ export default ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttonf2}
-
+          onPress={()=> navigation.navigate('SignUp')}
         >
-          <Text style={styles.buttonTextf}>Entre com sua conta Google</Text>
+          <Text style={styles.buttonTextf}>Não tem conta?  Inscreva-se...</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleSubmit}
