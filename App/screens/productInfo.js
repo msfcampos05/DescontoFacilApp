@@ -26,11 +26,11 @@ function DetailsScreen ({ route, navigation }) {
 
     console.log(itemName)
         await firebase.firestore()
-                .collection("products")
+                .collection('users')
                 .doc(firebase.auth().currentUser.uid)
-                .collection("wallet")
+                .collection('wallet')
                 .doc(itemId)
-                .add({
+                .set({
                     produto: itemName,
                     descricao: itemDescription,
                     valor:'R$ '+ itemPrice,

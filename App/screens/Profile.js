@@ -51,7 +51,7 @@ export default function Profile({ navigation }) {
         if (firebase.auth().currentUser.photoURL == null || user.photoURL == '') {
             setavatarSource("https://firebasestorage.googleapis.com/v0/b/descontofacilapp-ca0e7.appspot.com/o/profile%2Fprofile-blank.png?alt=media&token=0b0c6934-fbfd-4ed7-9510-1d2124f00fcf");
         } else {
-            setavatarSource(user.photoURL);
+            setavatarSource(firebase.auth().currentUser.photoURL);
         }
 
         setUser(firebase.auth().currentUser);
@@ -85,6 +85,18 @@ export default function Profile({ navigation }) {
 
     async function changePhto() {
 
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3]
+        });
+
+        if (!result.cancelled) {
+            const remoteUri = FireFunctions.shared
+            .uploadUserPhotoAsync(result.uri).then(ref=>{
+                setavatarSource(remoteUri)
+            })
+        }
         
     }
 
@@ -173,7 +185,7 @@ export default function Profile({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity onLongPress={changePhto}>
+            <TouchableOpacity onPress={changePhto}>
                 <Image style={styles.Image} source={{ uri: avatarSource }} />
             </TouchableOpacity>
             <View style={styles.profileName}>
