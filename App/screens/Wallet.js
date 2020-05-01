@@ -160,15 +160,7 @@ export default class Wallet extends Component {
             return (
               <TouchableOpacity
                 onLongPress={() => this.addItemWalletById(item.id)}
-                onPress={() => {
-                  navigation.push('ProductDetails', {
-                    itemId: item.id,
-                    itemName: item.produto,
-                    itemPrice: item.valor,
-                    itemImg: item.img,
-                    itemDescription: item.descricao,
-                  })
-                }}>
+               >
                 <View style={styles.productContainer}>
                   <Image
                     resizeMode="contain"
