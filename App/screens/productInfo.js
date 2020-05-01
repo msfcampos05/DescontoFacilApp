@@ -11,6 +11,7 @@ import {
   Button,
   StatusBar
 } from 'react-native';
+import * as firebase from 'firebase';
 
 function DetailsScreen({ route, navigation }) {
 
@@ -21,8 +22,27 @@ function DetailsScreen({ route, navigation }) {
   const { itemDescription } = route.params;
   const { itemImg } = route.params;
 
-  function clickEventListener() {
-    Alert.alert("Sucesso", "Cupom adicionado a carteira")
+  async function clickEventListener() {
+
+    console.log(itemName)
+        await firebase.firestore()
+                .collection("products")
+                .doc(firebase.auth().currentUser.uid)
+                .collection("wallet")
+                .doc(itemId)
+                .add({
+                    produto: itemName,
+                    descricao: itemDescription,
+                    valor:'R$ '+ itemPrice,
+                    img: itemImg,
+                    valid: '3'
+                })
+                .then(function () {
+                  Alert.alert("Sucesso", "Cupom adicionado a carteira")
+                })
+                .catch(function (error){
+                  Alert.alert("Desculpe", "Houve um erro " + error)
+                });
   }
 
   return (
