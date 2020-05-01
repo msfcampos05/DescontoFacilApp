@@ -4,36 +4,8 @@ var moment = require('moment');
 
 class FireFunctions {
 
-    updateProfile = async ({ username, email, phone, adress, password, localUri }) => {
-        //enviar foto para firebase e retorna url para remoteUri
-        const remoteUri = this.uploadUserPhotoAsync(localUri);
-        //Cria um documento contendo os dados de perfil do usuário
-        this.firestore
-            .collection('users') //Coleção raiz
-            .doc(this.uid) //Documento usuário único para cada usuário com seu uid
-            .collection("profile")
-            .doc("personal") // dentro do documento 'personal' adiciona os campos abaixo
-            .add({
-                name: username,
-                phone: phone,
-                adress: adress,
-            })
-            .then(ref => {
-                res(ref);
-            })
-            .catch(error => {
-                rej(error);
-            });
-
-        //Altera foto perfil usuário
-        this.auth.currentUser.updateProfile({
-            photoURL: remoteUri
-        })
-
-    }
-
     //Criar um novo usuário e atualizar os campos de profile
-    addUser = async ({ username, email, phone, adress, password, localUri }) => {
+    addUser = async ({ username, email, phone_number, adress, password, localUri }) => {
 
 
         return new Promise((res, rej) => {
@@ -41,10 +13,24 @@ class FireFunctions {
             this.auth
                 .createUserWithEmailAndPassword(email, password)
                 .then(() => {
-                    
-                    this.updateProfile(username, email, phone, adress, password, localUri)
-                    console.log('User account created & signed in!');
 
+                    //enviar foto para firebase e retorna url para remoteUri
+                    const remoteUri = this.uploadUserPhotoAsync(localUri);
+
+                    this.firestore
+                        .collection('users') //Coleção raiz
+                        .doc(this.uid) //Documento usuário único para cada usuário com seu uid
+                        .collection('profile')
+                        .doc('personal') // dentro do documento 'personal' adiciona os campos abaixo
+                        .set({
+                            name: username,
+                            phone: phone_number,
+                            adress: adress,
+                        })
+                        .then()
+                        .catch(error => {
+                            console.error(error);
+                        });
                 })
                 .catch(error => {
                     if (error.code === 'auth/email-already-in-use') {
@@ -81,6 +67,10 @@ class FireFunctions {
                 },
                 async () => {
                     const url = await upload.snapshot.ref.getDownloadURL();
+                    //Altera foto perfil usuário
+                    this.auth.currentUser.updateProfile({
+                        photoURL: url
+                    })
                     res(url);
                 }
             );

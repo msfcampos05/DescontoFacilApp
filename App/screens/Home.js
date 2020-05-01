@@ -96,6 +96,7 @@ export default class Home extends Component {
       });
   }
   componentDidMount() {
+    console.log(firebase.auth().currentUser.photoURL)
     this.getFirebaseData();
     this.setState({
       dataBackup: this.dataPd,

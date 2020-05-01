@@ -28,7 +28,7 @@ export default class addProductScreen extends React.Component {
 
     handleCreate = () => {
         FireFunctions.shared
-            .addUser({ username: this.state.username.trim() ,phone_number: this.state.phone_number.trim(), email: this.state.email.trim(), password: this.state.password.trim(), adress: this.state.adress.trim(), localUri: this.state.image })
+            .addUser({ username: this.state.username.trim(), phone_number: this.state.phone_number.trim(), email: this.state.email.trim(), password: this.state.password.trim(), adress: this.state.adress.trim(), localUri: this.state.image })
             .then(ref => {
                 this.setState({ username: "", image: null, password:"", email:"", adress:"",phone_number:""});
                 this.props.navigation.push('Home');
