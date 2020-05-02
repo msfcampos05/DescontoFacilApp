@@ -31,7 +31,9 @@ export default class Wallet extends Component {
  
   handledeleteItembyId(id) {
     firebase.firestore()
-      .collection("products")
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .collection('wallet')
       .doc(id)
       .delete().then(function () {
         console.log("Document successfully deleted!");
@@ -47,7 +49,7 @@ export default class Wallet extends Component {
       'Esta ação não pode ser desfeita!',
       [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Confirmar', onPress: () => this. handledeleteItembyId(id) },
+        { text: 'Confirmar',onPress: () => this. handledeleteItembyId(id) },
       ],
       { cancelable: false }
     )

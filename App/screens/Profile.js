@@ -31,7 +31,6 @@ import { Icon } from 'react-native-elements';
 export default function Profile({ navigation }) {
 
     const [user, setUser] = useState([]);
-
     const [upName, setupName] = useState('');
     const [upCargo, setupCargo] = useState('');
     const [upTel, setupTel] = useState('');
@@ -44,34 +43,26 @@ export default function Profile({ navigation }) {
     const [thirtyTextInput, setthirtyTextInput] = useState();
     console.disableYellowBox = true;
 
-    
+
 
     async function getUserInfo() {
-
-        const user = firebase.auth().currentUser;
-        if (firebase.auth().currentUser.photoURL == null || user.photoURL == '') {
-            setavatarSource("https://firebasestorage.googleapis.com/v0/b/descontofacilapp-ca0e7.appspot.com/o/profile%2Fprofile-blank.png?alt=media&token=0b0c6934-fbfd-4ed7-9510-1d2124f00fcf");
-        } else {
-
-            setavatarSource(firebase.auth().currentUser.photoURL);
-        }
 
         setUser(firebase.auth().currentUser);
         try {
             firebase.firestore()
-            .collection("users")
-            .doc(firebase.auth().currentUser.uid)
-            .collection("profile")
-            .doc("personal")
-            .get()
-            .then(doc => {
-                setUsers(doc.data())
-            });
+                .collection("users")
+                .doc(firebase.auth().currentUser.uid)
+                .collection("profile")
+                .doc("personal")
+                .get()
+                .then(doc => {
+                    setUsers(doc.data())
+                });
 
         } catch (error) {
-            console.log('erro no profile.js',error);
+            console.log('erro no profile.js', error);
         }
-        
+
     }
 
     async function getPhotoPermission() {
@@ -85,13 +76,21 @@ export default function Profile({ navigation }) {
     };
 
     useEffect(() => {
-        getPhotoPermission();
+
         const user = firebase.auth().currentUser;
+        getUserInfo();
+        if (firebase.auth().currentUser.photoURL == null || user.photoURL == '') {
+            setavatarSource("https://firebasestorage.googleapis.com/v0/b/firegrade-dc6b3.appspot.com/o/images%2FNurse-01-512.png?alt=media&token=cb7e320b-33a3-4f42-8e75-3e6f7013e487");
+        } else {
+            setavatarSource(user.photoURL);
+        }
+
+        getPhotoPermission();
         const userInfo = getUserInfo();
 
         return () => userInfo; // Stop listening for updates whenever the component unmounts
-        
-    },[])
+
+    }, [])
 
 
     async function changePhto() {
@@ -101,13 +100,33 @@ export default function Profile({ navigation }) {
             allowsEditing: true,
             aspect: [4, 3]
         });
-       
+
         if (!result.cancelled) {
+            setwhatoading(1);
+            setLoading(true);
             FireFunctions.shared
-            .uploadUserPhotoAsync(result.uri).then(ref=>{
-                setavatarSource(firebase.auth().currentUser.photoURL);
-                useEffect();
-            })
+                .uploadUserPhotoAsync(result.uri).then(ref => {
+
+                    setavatarSource(user.result.uri);
+
+                    firebase.auth().currentUser.updateProfile({
+                        photoURL: result.uri
+                    }).then(function () {
+                        setTimeout(() => {
+
+                            setLoading(false);
+                            Alert.alert('Tudo OK!', 'Sua foto foi atualizada!', [
+                                {
+                                    text: 'Fechar',
+                                    style: 'cancel',
+                                }
+                            ]);
+                        },
+                            2000);
+
+                    })
+
+                })
         }
 
     }
@@ -267,7 +286,7 @@ export default function Profile({ navigation }) {
                         <TextInput
                             style={styles.input}
                             maxLength={15}
-                            placeholder="Alterar Patente"
+                            placeholder="Alterar Endereço"
                             placeholderTextColor="#fff"
                             returnKeyType={"next"}
                             onSubmitEditing={() => { thirtyTextInput.focus(); }}

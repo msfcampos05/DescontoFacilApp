@@ -112,12 +112,40 @@ export default ({ navigation }) => {
 
   };
 
+  const forgotPassword = async () =>  {
+
+    if (email == null || email === '') {
+
+      alertDefault('Digite um email para redefinir sua senha!');
+
+    } else {
+
+      setLoading(true);
+      await firebase.auth().sendPasswordResetEmail(email)
+        .then(function (user) {
+
+          //Loading awai 1000ms to close
+          setTimeout(() => {
+            setLoading(false);
+            Alert.alert('E-mail Enviado!', 'Verifique sua caixa de entrada no email digitado!', [
+              {
+                text: 'Fechar',
+                style: 'cancel',
+              }
+            ]);
+          },
+            1500);
+
+        })
+    }
+  }
 
   //loading
   if (loading == true) {
     return (
       <View
         style={{
+
           flex: 1,
           alignContent: 'center',
           justifyContent: 'center',
@@ -128,7 +156,7 @@ export default ({ navigation }) => {
         <Lottie source={dataloading} style={{ width: 300, height: 300 }} autoPlay loop />
         <Text style={{ color: '#ffff', fontWeight: 'bold', marginTop: 8 }}>
           Aguarde...Estamos carregando tudo para você!
-            </Text>
+          </Text>
       </View>
     )
   }
@@ -177,14 +205,14 @@ export default ({ navigation }) => {
 
         />
         <TouchableOpacity
-
+          onPress={forgotPassword}
           style={styles.buttonf}
         >
           <Text style={styles.buttonTextf}>Esqueçeu sua senha? Clique Aqui!</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttonf2}
-          onPress={()=> navigation.navigate('SignUp')}
+          onPress={() => navigation.navigate('SignUp')}
         >
           <Text style={styles.buttonTextf}>Não tem conta?  Inscreva-se...</Text>
         </TouchableOpacity>
@@ -258,8 +286,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 40,
-    borderWidth:0.5,
-    marginBottom:10
+    borderWidth: 0.5,
+    marginBottom: 10
   },
   buttonText: {
     color: '#FFF',
