@@ -38,6 +38,7 @@ function DetailsScreen ({ route, navigation }) {
                     valid: '3'
                 })
                 .then(function () {
+                  navigation.navigate('Home');
                   Alert.alert("Sucesso", "Cupom adicionado a carteira")
                 })
                 .catch(function (error){

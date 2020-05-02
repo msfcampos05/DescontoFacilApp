@@ -20,6 +20,7 @@ import * as Permissions from 'expo-permissions';
 
 //Firebase imports
 import * as firebase from 'firebase';
+import FireFunctions from "../config/FireFunctions";
 
 import Lottie from 'lottie-react-native';
 import photoself from '../Components/loaders/selfie.json';
@@ -51,6 +52,7 @@ export default function Profile({ navigation }) {
         if (firebase.auth().currentUser.photoURL == null || user.photoURL == '') {
             setavatarSource("https://firebasestorage.googleapis.com/v0/b/descontofacilapp-ca0e7.appspot.com/o/profile%2Fprofile-blank.png?alt=media&token=0b0c6934-fbfd-4ed7-9510-1d2124f00fcf");
         } else {
+
             setavatarSource(firebase.auth().currentUser.photoURL);
         }
 
@@ -72,9 +74,18 @@ export default function Profile({ navigation }) {
         
     }
 
+    async function getPhotoPermission() {
+        if (Constants.platform.ios) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+            if (status != "granted") {
+                alert("We need permission to use your camera roll if you'd like to incude a photo.");
+            }
+        }
+    };
 
     useEffect(() => {
-
+        getPhotoPermission();
         const user = firebase.auth().currentUser;
         const userInfo = getUserInfo();
 
@@ -90,14 +101,15 @@ export default function Profile({ navigation }) {
             allowsEditing: true,
             aspect: [4, 3]
         });
-
+       
         if (!result.cancelled) {
-            const remoteUri = FireFunctions.shared
+            FireFunctions.shared
             .uploadUserPhotoAsync(result.uri).then(ref=>{
-                setavatarSource(remoteUri)
+                setavatarSource(firebase.auth().currentUser.photoURL);
+                useEffect();
             })
         }
-        
+
     }
 
     function setModalVisible(visible) {
@@ -139,8 +151,8 @@ export default function Profile({ navigation }) {
                     .doc("personal")
                     .update({
                         name: nam,
-                        tel: tell,
-                        cargo: carg,
+                        phone: tell,
+                        adress: carg,
                     })
                     .then(function () {
 
