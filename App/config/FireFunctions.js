@@ -67,10 +67,6 @@ class FireFunctions {
                 },
                 async () => {
                     const url = await upload.snapshot.ref.getDownloadURL();
-                    //Altera foto perfil usuário
-                    this.auth.currentUser.updateProfile({
-                        photoURL: url
-                    })
                     res(url);
                 }
             );

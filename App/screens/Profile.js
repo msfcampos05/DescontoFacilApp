@@ -24,7 +24,7 @@ import FireFunctions from "../config/FireFunctions";
 
 import Lottie from 'lottie-react-native';
 import photoself from '../Components/loaders/selfie.json';
-import dataloading from '../Components/loaders/jumping-loader.json';
+import dataloading from '../Components/loaders/mario.json';
 
 import { Icon } from 'react-native-elements';
 
@@ -47,7 +47,6 @@ export default function Profile({ navigation }) {
 
     async function getUserInfo() {
 
-        setUser(firebase.auth().currentUser);
         try {
             firebase.firestore()
                 .collection("users")
@@ -62,7 +61,7 @@ export default function Profile({ navigation }) {
         } catch (error) {
             console.log('erro no profile.js', error);
         }
-
+ 
     }
 
     async function getPhotoPermission() {
@@ -76,15 +75,12 @@ export default function Profile({ navigation }) {
     };
 
     useEffect(() => {
-
-        const user = firebase.auth().currentUser;
-        getUserInfo();
+        setUser(firebase.auth().currentUser);
         if (firebase.auth().currentUser.photoURL == null || user.photoURL == '') {
             setavatarSource("https://firebasestorage.googleapis.com/v0/b/firegrade-dc6b3.appspot.com/o/images%2FNurse-01-512.png?alt=media&token=cb7e320b-33a3-4f42-8e75-3e6f7013e487");
         } else {
-            setavatarSource(user.photoURL);
+            setavatarSource(firebase.auth().currentUser.photoURL);
         }
-
         getPhotoPermission();
         const userInfo = getUserInfo();
 
@@ -102,18 +98,17 @@ export default function Profile({ navigation }) {
         });
 
         if (!result.cancelled) {
-            setwhatoading(1);
+            setwhatoading(2);
             setLoading(true);
-            FireFunctions.shared
+            setavatarSource(result.uri);
+            await FireFunctions.shared
                 .uploadUserPhotoAsync(result.uri).then(ref => {
 
-                    setavatarSource(user.result.uri);
-
                     firebase.auth().currentUser.updateProfile({
-                        photoURL: result.uri
+                        photoURL: ref
                     }).then(function () {
                         setTimeout(() => {
-
+                            setavatarSource(firebase.auth().currentUser.photoURL);
                             setLoading(false);
                             Alert.alert('Tudo OK!', 'Sua foto foi atualizada!', [
                                 {
@@ -122,8 +117,8 @@ export default function Profile({ navigation }) {
                                 }
                             ]);
                         },
-                            2000);
-
+                            1000);
+                        
                     })
 
                 })
@@ -200,14 +195,14 @@ export default function Profile({ navigation }) {
 
     if (loading == true && whatoading == 1) {
         return (
-            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#694fad' }}>
+            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#e3345f' }}>
                 <Lottie source={photoself} style={{ width: 350, height: 350 }} autoPlay loop />
                 <Text style={{ textAlign: 'center', color: '#ffff', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
             </View>
         )
     } else if (loading == true && whatoading == 2) {
         return (
-            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#694fad' }}>
+            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#e3345f' }}>
                 <Lottie source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
                 <Text style={{ textAlign: 'center', color: '#ffff', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
             </View>

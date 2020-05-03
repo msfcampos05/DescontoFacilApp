@@ -12,7 +12,8 @@ export default class addProductScreen extends React.Component {
         text: "",
         description: "",
         price: "",
-        image: null
+        image: null,
+        loading: false
     };
 
     componentDidMount() {
@@ -52,8 +53,19 @@ export default class addProductScreen extends React.Component {
             this.setState({ image: result.uri });
         }
     };
+    
 
     render() {
+
+        if (this.loading == true) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ff5b77' }}>
+                    <Lottie source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
+                    <Text style={{ textAlign: 'center', color: '#ffff', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
+                </View>
+            )
+        }
+
         return (
           <>  
             <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
