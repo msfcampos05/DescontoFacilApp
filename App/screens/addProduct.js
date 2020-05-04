@@ -1,11 +1,13 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, TextInput, Image, Button,StatusBar } from "react-native";
+import { View, Alert, Text, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, TextInput, Image, Button,StatusBar } from "react-native";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { Ionicons } from "@expo/vector-icons";
 import FireFunctions from "../config/FireFunctions";
 import * as firebase from 'firebase'
 import * as ImagePicker from "expo-image-picker";
+import Lottie from 'lottie-react-native';
+import dataloading from '../Components/loaders/selfie.json';
 
 export default class addProductScreen extends React.Component {
     state = {
@@ -30,12 +32,24 @@ export default class addProductScreen extends React.Component {
         }
     };
 
-    handlePost = () => {
+     handlePost = async () => {
+        this.setState({loading:true });
         FireFunctions.shared
             .addPost({ text: this.state.text.trim(), price: this.state.price.trim(), description: this.state.description.trim(), localUri: this.state.image })
             .then(ref => {
-                this.setState({ text: "", image: null });
-                this.props.navigation.push('Home');
+
+                setTimeout(() => {
+                     Alert.alert('Tudo certo!', 'Cupon de desconto disponível.', [
+                        {
+                            text: 'Fechar',
+                            style: 'cancel',
+                        }
+                    ]);
+                    
+                    this.setState({ text: "", image: null, loading:false });
+                    this.props.navigation.push('Home');
+                },
+                    1000);
             })
             .catch(error => {
                 alert(error);
@@ -109,6 +123,8 @@ export default class addProductScreen extends React.Component {
                     <TextInput 
                     style={styles.inputPrice} 
                     placeholder="Valor"
+                    keyboardType='phone-pad'
+                    autoCompleteType='cc-number'
                     value={this.state.price}
                     onChangeText={price => this.setState({ price })}
                     />     

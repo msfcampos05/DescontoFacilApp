@@ -97,20 +97,20 @@ export default class Home extends Component {
   }
   componentDidMount() {
     console.log(firebase.auth().currentUser.photoURL)
-    this.getFirebaseData();
-    this.setState({
-      dataBackup: this.dataPd,
-      dataSource: this.dataPd,
-    })
-
+    var Unmount;
+    Unmount = this.getFirebaseData();
+    this.componentWillUnmount(Unmount)
   }
-
+  componentWillUnmount(Unmount){
+    Unmount;
+  }
   filterItem = event => {
 
     var query = event.nativeEvent.text;
     this.setState({
       query: query,
     });
+    
     if (query == '') {
       this.setState({
         dataSource: this.state.dataBackup,
