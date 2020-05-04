@@ -78,6 +78,7 @@ export default class Home extends Component {
     )
 
   }
+  //Get user info from firebase
   getFirebaseData = async () => {
 
     await firebase.firestore()
@@ -108,7 +109,7 @@ export default class Home extends Component {
       });
   }
 
-
+  //Mount component 
   componentDidMount() {
     console.log(firebase.auth().currentUser.photoURL)
     var Unmount;
@@ -131,7 +132,7 @@ export default class Home extends Component {
     Unmount;
   }
 
-
+  //SearchBar still not working 
   filterItem = event => {
 
     var query = event.nativeEvent.text;
@@ -155,14 +156,16 @@ export default class Home extends Component {
     }
   };
 
+  //Separator for flat list 
   separator = () => {
     return (
       <View style={{ height: 5, width: '100%', backgroundColor: '#e5e5e5' }} />
     );
   };
 
+  //Render 
   render() {
-
+    //Loading Lottie based on user action
     if (this.state.loading == true && this.state.whatoading == 1) {
       return (
         <View style={{ flex: 1,justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#9b58b6' }}>
