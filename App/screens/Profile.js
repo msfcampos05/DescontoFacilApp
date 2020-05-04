@@ -17,11 +17,10 @@ import {
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-
 //Firebase imports
 import * as firebase from 'firebase';
 import FireFunctions from "../config/FireFunctions";
-
+//Lottie imports using on loading elements
 import Lottie from 'lottie-react-native';
 import photoself from '../Components/loaders/selfie.json';
 import dataloading from '../Components/loaders/mario.json';
@@ -98,7 +97,7 @@ export default function Profile({ navigation }) {
         });
 
         if (!result.cancelled) {
-            setwhatoading(2);
+            setwhatoading(1);
             setLoading(true);
             setavatarSource(result.uri);
             await FireFunctions.shared
@@ -195,16 +194,16 @@ export default function Profile({ navigation }) {
 
     if (loading == true && whatoading == 1) {
         return (
-            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#e3345f' }}>
+            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
                 <Lottie source={photoself} style={{ width: 350, height: 350 }} autoPlay loop />
-                <Text style={{ textAlign: 'center', color: '#ffff', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
+                <Text style={{ textAlign: 'center', color: '#e3345f', fontSize: 12 }}>Hum, acho que vi um gatinho(a)...Alterando Foto</Text>
             </View>
         )
     } else if (loading == true && whatoading == 2) {
         return (
-            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#e3345f' }}>
+            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
                 <Lottie source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
-                <Text style={{ textAlign: 'center', color: '#ffff', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
+                <Text style={{ textAlign: 'center', color: '#e3345f', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
             </View>
         )
     }

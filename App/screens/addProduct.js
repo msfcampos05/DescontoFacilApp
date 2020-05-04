@@ -73,9 +73,9 @@ export default class addProductScreen extends React.Component {
 
         if (this.state.loading == true) {
             return (
-                <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ff5b77' }}>
+                <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
                     <Lottie source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
-                    <Text style={{ textAlign: 'center', color: '#ffff', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
+                    <Text style={{ textAlign: 'center', color: '#ff5b77', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
                 </View>
             )
         }

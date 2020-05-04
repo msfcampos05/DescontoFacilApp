@@ -13,6 +13,9 @@ import {
 import { FlatList } from 'react-native-gesture-handler';
 import addImage from '../../assets/plusCategory.png';
 import * as firebase from 'firebase';
+import Lottie from 'lottie-react-native';
+import dataloading from '../Components/loaders/home-loading.json';
+import deleteLoading from '../Components/loaders/check.json';
 const { width, height } = Dimensions.get('window');
 
 export default class Home extends Component {
@@ -24,8 +27,9 @@ export default class Home extends Component {
       query: null,
       dataSource: [],
       dataBackup: [],
-      loading: true,
+      loading: false,
       dataPd: [],
+      whatoading: 1
     };
   }
 
@@ -42,11 +46,19 @@ export default class Home extends Component {
 
   }
   //add item to wallet 
-  handledeleteItembyId(id) {
-    firebase.firestore()
+  handledeleteItembyId = async (id) =>{
+
+    this.setState({whatoading: 'delete' });
+    this.setState({loading: true });
+
+    await firebase.firestore()
       .collection("products")
       .doc(id)
-      .delete().then(function () {
+      .delete().then( ()=> {
+      setTimeout(() => {
+        this.setState({loading: false });
+      },
+        1000);
         console.log("Document successfully deleted!");
       }).catch(function (error) {
         console.error("Error removing document: ", error);
@@ -60,15 +72,15 @@ export default class Home extends Component {
       'Esta ação não pode ser desfeita!',
       [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Confirmar', onPress: () => this. handledeleteItembyId(id) },
+        { text: 'Confirmar', onPress: () => this.handledeleteItembyId(id) },
       ],
       { cancelable: false }
     )
 
   }
-  getFirebaseData() {
+  getFirebaseData = async () => {
 
-    firebase.firestore()
+    await firebase.firestore()
       .collection('products')
       .onSnapshot(querySnapshot => {
         const list = [];
@@ -95,22 +107,38 @@ export default class Home extends Component {
         }
       });
   }
+
+
   componentDidMount() {
     console.log(firebase.auth().currentUser.photoURL)
     var Unmount;
-    Unmount = this.getFirebaseData();
+
+    Unmount = this.getFirebaseData().then(() => {
+      this.setState({whatoading: 1 });
+      this.setState({loading: true });
+      setTimeout(() => {
+        this.setState({loading: false });
+      },
+        2000);
+    }
+    );
+
     this.componentWillUnmount(Unmount)
   }
-  componentWillUnmount(Unmount){
+
+
+  componentWillUnmount(Unmount) {
     Unmount;
   }
+
+
   filterItem = event => {
 
     var query = event.nativeEvent.text;
     this.setState({
       query: query,
     });
-    
+
     if (query == '') {
       this.setState({
         dataSource: this.state.dataBackup,
@@ -134,6 +162,21 @@ export default class Home extends Component {
   };
 
   render() {
+
+    if (this.state.loading == true && this.state.whatoading == 1) {
+      return (
+        <View style={{ flex: 1,justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#9b58b6' }}>
+          <Lottie source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
+          <Text style={{ textAlign: 'center', color: '#ffff', fontSize: 12 }}>Aguarde...</Text>
+        </View>
+      )
+    }else if (this.state.loading == true && this.state.whatoading == 'delete') {
+      return (
+          <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
+              <Lottie source={deleteLoading} style={{ width: 350, height: 350 }} autoPlay loop />
+          </View>
+      )
+  }
     const { navigation } = this.props;
     console.disableYellowBox = true;
     return (
@@ -202,7 +245,7 @@ export default class Home extends Component {
           }}
         />
         <View>
-          <TouchableOpacity style={styles.addButton} onPress={()=> navigation.push('addProducts')}>
+          <TouchableOpacity style={styles.addButton} onPress={() => navigation.push('addProducts')}>
             <View style={styles.ViewiButton}>
               <Image style={styles.Image} source={addImage} />
             </View>

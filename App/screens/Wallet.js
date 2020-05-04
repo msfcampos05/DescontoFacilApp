@@ -13,6 +13,7 @@ import {
 import { FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 const { width, height } = Dimensions.get('window');
+//import qrCodejs from '../Components/qrcode';
 
 export default class Wallet extends Component {
 
@@ -28,7 +29,11 @@ export default class Wallet extends Component {
     };
   }
 
- 
+  
+  generateQrCode(){
+
+  }
+
   handledeleteItembyId(id) {
     firebase.firestore()
       .collection("users")
