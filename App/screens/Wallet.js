@@ -12,9 +12,6 @@ import {
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
-const { width, height } = Dimensions.get('window');
-//import qrCodejs from '../Components/qrcode';
-
 export default class Wallet extends Component {
 
   constructor(props) {
