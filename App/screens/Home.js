@@ -8,7 +8,8 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Alert
+  Alert,
+  SafeAreaView,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import addImage from '../../assets/plusCategory.png';
@@ -183,7 +184,7 @@ export default class Home extends Component {
     const { navigation } = this.props;
     console.disableYellowBox = true;
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
 
         <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
 
@@ -254,7 +255,7 @@ export default class Home extends Component {
             </View>
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

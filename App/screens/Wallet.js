@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
+const { width, height } = Dimensions.get('window');
+
 export default class Wallet extends Component {
 
   constructor(props) {
@@ -24,11 +26,6 @@ export default class Wallet extends Component {
       loading: true,
       dataPd: [],
     };
-  }
-
-  
-  generateQrCode(){
-
   }
 
   handledeleteItembyId(id) {
