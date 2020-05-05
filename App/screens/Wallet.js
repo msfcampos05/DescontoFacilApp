@@ -1,4 +1,4 @@
-//'use strict';
+'use strict';
 import React, { Component } from 'react';
 import {
   View,
@@ -9,12 +9,13 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Alert
+  Alert,
+  AppRegistry,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 const { width, height } = Dimensions.get('window');
-//import QRCode from 'react-native-qrcode-generator';
+import QRCode from 'react-native-qrcode-generator';
 export default class Wallet extends Component {
 
   constructor(props) {
@@ -22,11 +23,10 @@ export default class Wallet extends Component {
 
     this.state = {
       query: null,
-      dataSource: [],
-      dataBackup: [],
       loading: true,
-      dataPd: [],
+      data: [],
     };
+    this.dataBackup = [];
   }
 
   handledeleteItembyId(id) {
@@ -49,7 +49,7 @@ export default class Wallet extends Component {
       'Esta ação não pode ser desfeita!',
       [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Confirmar',onPress: () => this. handledeleteItembyId(id) },
+        { text: 'Confirmar', onPress: () => this.handledeleteItembyId(id) },
       ],
       { cancelable: false }
     )
@@ -74,9 +74,9 @@ export default class Wallet extends Component {
           });
 
         });
-
+        this.dataBackup = list;
         this.setState({
-          dataPd: list,
+          data: list,
         })
 
         if (this.loading) {
@@ -88,33 +88,30 @@ export default class Wallet extends Component {
   }
   componentDidMount() {
     this.getFirebaseData();
-    this.setState({
-      dataBackup: this.dataPd,
-      dataSource: this.dataPd,
-    })
 
   }
 
+  //SearchBar working 
   filterItem = event => {
 
-    var query = event.nativeEvent.text;
-    this.setState({
-      query: query,
-    });
-    if (query == '') {
-      this.setState({
-        dataSource: this.state.dataBackup,
-      });
-      console.log(dataSource);
-    } else {
-      var data = this.state.dataBackup;
-      query = query.toLowerCase();
-      data = data.filter(l => l.produto.toLowerCase().match(query));
+    //Armazena texto do input search
+    var text = event.nativeEvent.text;
 
-      this.setState({
-        dataSource: data,
-      });
-    }
+    this.setState({
+      query: text,
+    });
+
+    const newData = this.dataBackup.filter(item => {
+      const itemData = `${item.produto.toUpperCase()} ${item.descricao.toUpperCase()} ${item.valor.toUpperCase()}`;
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+
+    this.setState({
+      data: newData,
+    });
+
   };
 
   separator = () => {
@@ -155,14 +152,14 @@ export default class Wallet extends Component {
         </View>
 
         <FlatList
-          data={this.state.dataPd}
+          data={this.state.data}
           ItemSeparatorComponent={() => this.separator()}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
                 onLongPress={() => this.addItemWalletById(item.id)}
-               >
+              >
                 <View style={styles.productContainer}>
                   <Image
                     resizeMode="contain"
@@ -177,6 +174,11 @@ export default class Wallet extends Component {
                       {item.descricao}
                     </Text>
                     <Text style={styles.price}>{item.valor}</Text>
+                    <QRCode
+                      value={item.valor}
+                      size={100}
+                      bgColor='black'
+                      fgColor='white' />
                   </View>
                 </View>
               </TouchableOpacity>
