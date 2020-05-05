@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 import React, { Component } from 'react';
 import {
   View,
@@ -14,7 +14,7 @@ import {
 import { FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 const { width, height } = Dimensions.get('window');
-import QRCode from 'react-native-qrcode-generator';
+//import QRCode from 'react-native-qrcode-generator';
 export default class Wallet extends Component {
 
   constructor(props) {
