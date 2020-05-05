@@ -26,12 +26,12 @@ export default class Home extends Component {
 
     this.state = {
       query: null,
-      dataSource: [],
-      dataBackup: [],
       loading: false,
-      dataPd: [],
+      data: [],
       whatoading: 1
     };
+    
+    this.dataBackup = [];
   }
 
   //Alert to confirm add item to wallet
@@ -97,9 +97,10 @@ export default class Home extends Component {
           });
 
         });
+        this.dataBackup = list;
 
         this.setState({
-          dataPd: list,
+          data: list,
         })
 
         if (this.loading) {
@@ -133,28 +134,27 @@ export default class Home extends Component {
     Unmount;
   }
 
-  //SearchBar still not working 
+  //SearchBar working 
   filterItem = event => {
 
-    var query = event.nativeEvent.text;
+    //Armazena texto do input search
+    var text= event.nativeEvent.text;
+    
     this.setState({
-      query: query,
+      query: text,
     });
 
-    if (query == '') {
-      this.setState({
-        dataSource: this.state.dataBackup,
-      });
-      console.log(dataSource);
-    } else {
-      var data = this.state.dataBackup;
-      query = query.toLowerCase();
-      data = data.filter(l => l.produto.toLowerCase().match(query));
+    const newData = this.dataBackup.filter(item => {
+      const itemData = `${item.produto.toUpperCase()} ${item.descricao.toUpperCase()} ${item.valor.toUpperCase()}`;
+      const textData = text.toUpperCase();
 
-      this.setState({
-        dataSource: data,
-      });
-    }
+      return itemData.indexOf(textData) > -1;
+    });
+
+   this.setState({
+      data: newData,
+    });
+
   };
 
   //Separator for flat list 
@@ -212,7 +212,7 @@ export default class Home extends Component {
         </View>
 
         <FlatList
-          data={this.state.dataPd}
+          data={this.state.data}
           ItemSeparatorComponent={() => this.separator()}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
@@ -363,227 +363,3 @@ const styles = StyleSheet.create({
 
 
 
-
-
-/*
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  SafeAreaView,
-  Alert,
-  StatusBar,
-  Dimensions,
-  useCallback,
-  Modal,
-  Icon
-} from 'react-native';
-import addImage from '../../assets/plusCategory.png';
-import * as firebase from 'firebase';
-
-const { width, height } = Dimensions.get("window");
-
-
-const Home = ({ navigation }) => {
-
-  const [loading, setLoading] = useState(true); // Set loading to true on component mount
-  const [data, setdata] = useState([]);
-  const [query, setQuery] = useState(null);
-  const [modalVisible, setmodalVisible] = useState(false);
-
-  useEffect(() => {
-
-    firebase.firestore()
-      .collection('products')
-      .onSnapshot(querySnapshot => {
-        const list = [];
-        querySnapshot.forEach(doc => {
-          const { descricao, img, produto, valor } = doc.data();
-          list.push({
-            id: doc.id,
-            descricao,
-            img,
-            produto,
-            valor
-          });
-        });
-
-        setdata(list);
-
-        if (loading) {
-          setLoading(false);
-        }
-      });
-
-  }, []);
-
-
-  function addItemWalletById(id) {
-    Alert.alert(
-      'Adicionar o cupom a carteira?',
-      'O desconto será adicionado a sua carteira de cupons!',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Confirmar', onPress: () => handleDelete(id) },
-      ],
-      { cancelable: false }
-    )
-
-  }
-
-  function handleDelete(id) {
-
-
-  };
-
-  const separetor = () => {
-    return (
-      <View style={{ height: 5, width: "180%", backgroundColor: "#e5e5e5" }} />
-    )
-  }
-
-  return (
-
-    <>
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#ff5b77" />
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Desconto Fácil App</Text>
-        </View>
-        <View style={styles.header}>
-          <TextInput
-            placeholder="Pesquisar produto..."
-            placeholderTextColor="gray"
-            value={query}
-            style={styles.input}
-          />
-        </View>
-        <View style={styles.flatContainer}>
-          <FlatList
-            data={data}
-            ItemSeparatorComponent={() => separetor()}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity onLongPress={() => addItemWalletById(item.id)} onPress={() => { navigation.push('productInfo') }}>
-
-                  <View style={styles.productContainer}>
-                    <Image
-                      resizeMode="contain"
-                      style={styles.image}
-                      source={{ uri: item.img }}
-                    />
-                    <View resizeMode="contain" style={styles.dataContainer}>
-                      <Text numberOfLines={1} style={styles.title}>{item.produto}</Text>
-                      <Text numberOfLines={6} style={styles.description} >{item.descricao}</Text>
-                      <Text style={styles.price}>{item.valor}</Text>
-                    </View>
-
-                  </View>
-                </TouchableOpacity>
-              )
-            }}
-
-          />
-        </View>
-      </View>
-      <View>
-        <TouchableOpacity style={styles.addButton}>
-          <View style={styles.ViewiButton}>
-            <Image style={styles.Image} source={addImage} />
-          </View>
-        </TouchableOpacity>
-      </View>
-    </>
-  );
-}
-
-const styles = StyleSheet.create({
-
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    flexGrow: 1,
-  },
-  header: {
-    height: 50,
-    width: "100%",
-    backgroundColor: "#ff5b77",
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center'
-
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "500",
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  input: {
-    height: 30,
-    width: "90%",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 5,
-    paddingLeft: 10,
-  },
-  Image: {
-    width: 20,
-    height: 23,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  addButton: {
-    position: 'absolute',
-    backgroundColor: '#FFFCFC',
-    elevation: 4,
-    borderRadius: 100,
-    height: 57,
-    width: 58,
-    right: 15,
-    bottom: 30,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  productContainer: {
-    flexDirection: "row",
-    padding: 5,
-  },
-  image: {
-    height: 100,
-    width: 100,
-    alignSelf: "center"
-  },
-  dataContainer: {
-    padding: 10,
-    paddingTop: 5,
-    width: width - 100
-
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#000"
-  },
-  description: {
-    fontSize: 12,
-    color: "gray",
-    textAlign: 'justify',
-    flexShrink: 1
-  },
-  price: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000"
-  }
-});
-
-export default Home;
-
-*/
