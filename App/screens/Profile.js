@@ -35,7 +35,7 @@ export default function Profile({ navigation }) {
     const [upTel, setupTel] = useState('');
     const [users, setUsers] = useState([]); // Initial empty array of users
     const [loading, setLoading] = useState(false); // Set loading to true on component mount
-    const [avatarSource, setavatarSource] = useState("https://firebasestorage.googleapis.com/v0/b/firegrade-dc6b3.appspot.com/o/images%2FNurse-01-512.png?alt=media&token=cb7e320b-33a3-4f42-8e75-3e6f7013e487");
+    const [avatarSource, setavatarSource] = useState("https://i.dlpng.com/static/png/1647142-profilepng-512512-profile-png-512_512_preview.png");
     const [modalVisible, setmodalVisible] = useState(false);
     const [whatoading, setwhatoading] = useState();
     const [secondTextInput, setsecondTextInput] = useState();
