@@ -28,7 +28,8 @@ export default class Home extends Component {
       query: null,
       loading: false,
       data: [],
-      whatoading: 1
+      whatoading: 1,
+      barIcon: 'https://img.icons8.com/ios/100/000000/search--v1.png'
     };
     
     this.dataBackup = [];
@@ -139,6 +140,15 @@ export default class Home extends Component {
 
     //Armazena texto do input search
     var text= event.nativeEvent.text;
+    if(text==''){
+      this.setState({
+        barIcon:'https://img.icons8.com/ios/100/000000/search--v1.png'
+      })
+    }else{
+      this.setState({
+        barIcon:'https://img.icons8.com/ios/50/000000/left.png'
+      })
+    }
     
     this.setState({
       query: text,
@@ -163,6 +173,18 @@ export default class Home extends Component {
       <View style={{ height: 5, width: '100%', backgroundColor: '#e5e5e5' }} />
     );
   };
+  
+  searchIconBack =()=>{
+      
+    if(this.state.barIcon=='https://img.icons8.com/ios/50/000000/left.png'){
+      this.setState({
+        barIcon:'https://img.icons8.com/ios/100/000000/search--v1.png',
+        query:null
+      })
+      this.getFirebaseData();
+    }
+
+  }
 
   //Render 
   render() {
@@ -194,12 +216,14 @@ export default class Home extends Component {
 
         <View style={styles.header}>
           <View style={styles.SectionStyle}>
+            <TouchableOpacity onPress={()=>this.searchIconBack()}>
             <Image
               //We are showing the Image from online
-              source={{ uri: 'https://img.icons8.com/ios/100/000000/search--v1.png', }}
+              source={{ uri: this.state.barIcon }}
               //Image Style
               style={styles.ImageStyle}
             />
+            </TouchableOpacity>
             <TextInput
               underlineColorAndroid="transparent"
               placeholder="O que procura..."
