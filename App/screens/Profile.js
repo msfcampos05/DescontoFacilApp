@@ -276,7 +276,7 @@ export default function Profile({ navigation }) {
                             autoCorrect={false}
                         />
 
-                        <Text style={styles.label}> Patente: </Text>
+                        <Text style={styles.label}> Endereço: </Text>
                         <TextInput
                             style={styles.input}
                             maxLength={15}

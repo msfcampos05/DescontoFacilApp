@@ -17,7 +17,7 @@ import logo from '../../assets/Logo-1.png';
 //Lottie depence 
 import Lottie from 'lottie-react-native';
 //Lottie File 
-import dataloading from '../Components/loaders/leviosa.json';
+import dataloading from '../Components/loaders/mario.json';
 
 
 import * as firebase from 'firebase'
