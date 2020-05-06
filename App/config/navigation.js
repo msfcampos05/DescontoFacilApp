@@ -121,7 +121,7 @@ const RootStackScreen = () => {
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(!isLoading);
-    }, 500);
+    }, 100);
   }, []);
 
   return (
