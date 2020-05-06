@@ -59,7 +59,7 @@ export default class Home extends Component {
       setTimeout(() => {
         this.setState({loading: false });
       },
-        1000);
+        300);
         console.log("Document successfully deleted!");
       }).catch(function (error) {
         console.error("Error removing document: ", error);

@@ -25,6 +25,7 @@ export default class Wallet extends Component {
       query: null,
       loading: true,
       data: [],
+      qrSize: 100
     };
     this.dataBackup = [];
   }
@@ -158,6 +159,7 @@ export default class Wallet extends Component {
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
+              
                 onLongPress={() => this.addItemWalletById(item.id)}
               >
                 <View style={styles.productContainer}>
@@ -174,12 +176,18 @@ export default class Wallet extends Component {
                       {item.descricao}
                     </Text>
                     <Text style={styles.price}>{item.valor}</Text>
-                    <QRCode
+                  </View>
+         
+                  <View style={styles.qrView}>
+                
+                  <QRCode
                       value={item.valor}
-                      size={100}
+                      size={this.state.qrSize}
                       bgColor='black'
                       fgColor='white' />
+                  
                   </View>
+  
                 </View>
               </TouchableOpacity>
             );
@@ -194,6 +202,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+        
   },
   header: {
     height: 60,
@@ -236,18 +245,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   productContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     padding: 2,
+    padding: 8, 
   },
   image: {
     height: 150,
-    width: 90,
+    width: 100,
     alignSelf: "center"
+    
   },
   dataContainer: {
     padding: 5,
     paddingTop: 5,
-    width: width - 100,
+    marginRight: 5,
+    resizeMode: 'stretch',
+    alignContent:'center',
+    alignItems:'center'
+    
+    
+  },
+  qrView:{
+    alignSelf:'center',
+    
   },
   title: {
     fontSize: 16,
@@ -256,6 +276,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
+    flexDirection: 'row',
     color: 'gray',
     textAlign: 'justify',
   },
@@ -263,12 +284,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#000"
-  },
-  Image: {
-    width: 20,
-    height: 23,
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   addButton: {
     position: 'absolute',

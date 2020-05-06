@@ -33,7 +33,7 @@ function DetailsScreen ({ route, navigation }) {
                 .set({
                     produto: itemName,
                     descricao: itemDescription,
-                    valor:'R$ '+ itemPrice,
+                    valor: itemPrice,
                     img: itemImg,
                     valid: '3'
                 })
