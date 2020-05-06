@@ -76,7 +76,7 @@ export default function Profile({ navigation }) {
     useEffect(() => {
         setUser(firebase.auth().currentUser);
         if (firebase.auth().currentUser.photoURL == null || user.photoURL == '') {
-            setavatarSource("https://firebasestorage.googleapis.com/v0/b/firegrade-dc6b3.appspot.com/o/images%2FNurse-01-512.png?alt=media&token=cb7e320b-33a3-4f42-8e75-3e6f7013e487");
+            setavatarSource("https://i.dlpng.com/static/png/1647142-profilepng-512512-profile-png-512_512_preview.png");
         } else {
             setavatarSource(firebase.auth().currentUser.photoURL);
         }
