@@ -6,6 +6,8 @@ Descontos e promoções de maneira fácil e intuitiva
 
 Tenha um catalogo de cupons virtual para sua loja. Com ele, suas promoções podem atingir um publico ainda maior. O DescontoFacilApp é pensado para que seu cliente possa visualizar promoções e guardar cupons para uso posterior. Esses cupons podem ser validados diretamente no caixa, sem burocracia, sem complicações. O cliente fica satisfeito e o alcance do seu publico fica maior.
 
+![](http://i.picasion.com/pic90/7c60b60f7840d1b3ccb97756871b8d46.gif)
+
 You'll need to have [Expo](https://expo.io/learn) installed on your machine in order to follow along.
 
 ## Configuration
