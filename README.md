@@ -8,6 +8,20 @@ Tenha um catalogo de cupons virtual para sua loja. Com ele, suas promoções pod
 
 ![](http://i.picasion.com/pic90/7c60b60f7840d1b3ccb97756871b8d46.gif)
 
+
+## Functionality Implementention schema 
+
+- [x] Login Screen, SingUp Screen
+- [x] Tabs
+- [x] Home, Wallet, Profile Screen
+- [x] Add Cupom Screen
+- [x] Product Description Screen
+- [x] SearchBar
+- [x] QRCode Generator
+- [x] Firebase Integration - CRUD
+- [x] Generate apk signed
+- [x] Tests
+
 You'll need to have [Expo](https://expo.io/learn) installed on your machine in order to follow along.
 
 ## Configuration
@@ -29,10 +43,33 @@ export default {
 - `git clone https://github.com/msfcampos05/DescontoFacilApp.git`
 - `yarn install` / `npm install`
 
+NPM:
+
+```sh
+npm install
+```
+
+YARN:
+
+```sh
+yarn install
+```
+
+
 ## Running
 
-### Use the `yarn start`, `yarn ios`, or `yarn android` tasks as detailed below.
+### Use the `yarn/expo/npm start`, `yarn/npm ios`, or `yarn/npm android` tasks as detailed below.
+NPM && EXPO:
 
+```sh
+npm start or exo start
+```
+
+YARN:
+
+```sh
+yarn start
+```
   ## Available Scripts
 
   This app was initialized using Yarn and therefore you should use Yarn commands going forward.
