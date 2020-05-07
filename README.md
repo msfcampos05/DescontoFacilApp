@@ -65,7 +65,7 @@ yarn install
 NPM && EXPO:
 
 ```sh
-npm start or exo start
+npm start or expo start
 ```
 
 YARN:
