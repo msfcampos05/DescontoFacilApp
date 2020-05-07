@@ -3,7 +3,7 @@
 </h1>
 
 <h1 align="center">
-  ☕ DescontoFácilAPp
+  DescontoFácilApp
 </h1>
 
 <h4 align="center">
