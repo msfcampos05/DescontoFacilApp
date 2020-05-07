@@ -2,7 +2,13 @@
     <img alt="DescontoFacilApp" title="#delicinha" src="assets/icon.png" width="250px" />
 </h1>
 
-# DescontoFacilApp
+<h1 align="center">
+  ☕ DescontoFácilAPp
+</h1>
+
+<h4 align="center">
+  ☕ Code and coffee
+</h4>
 
 ## Um aplicativo para potencializar suas vendas
 
