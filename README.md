@@ -20,7 +20,7 @@ Tenha um catalogo de cupons virtual para sua loja. Com ele, suas promoções pod
 [https://msfcampos05.wixsite.com/guiadecomprasapp](https://msfcampos05.wixsite.com/guiadecomprasapp)
 
 <p align="center">
-  <img alt="http://i.picasion.com/pic90/7c60b60f7840d1b3ccb97756871b8d46.gif" width="100%">
+  ![](http://i.picasion.com/pic90/7c60b60f7840d1b3ccb97756871b8d46.gif)
 </p>
 
 ## Functionality Implementention Sprints
