@@ -1,10 +1,39 @@
-# DescontoFacilApp
+<h1 align="center">
+    <img alt="DescontoFacilApp" title="#delicinha" src="assets/icon.png" width="250px" />
+</h1>
+
+<h1 align="center">
+  DescontoFácilApp
+</h1>
+
+<h4 align="center">
+  ☕ Code and coffee
+</h4>
 
 ## Um aplicativo para potencializar suas vendas
 
 Descontos e promoções de maneira fácil e intuitiva
 
-Tenha um catalogo de cupons virtual para sua loja. Com ele, suas promoções podem atingir um publico ainda maior. O DescontoFacilApp é pensado para que seu cliente possa visualizar promoções e guardar cupons para uso posterior. Esses cupons podem ser validados diretamente no caixa, sem burocracia, sem complicações. O cliente fica satisfeito e o alcance do seu publico fica maior.
+Tenha um catalogo de cupons virtual para sua loja. Com ele, suas promoções podem atingir um publico ainda maior. O DescontoFacilApp é pensado para que seu cliente possa visualizar promoções e guardar cupons para uso posterior. Esses cupons podem ser validados diretamente no caixa, sem burocracia, sem complicações. O cliente fica satisfeito e o alcance do seu publico fica maior. 
+
+## Visite nosso site!!!
+[https://msfcampos05.wixsite.com/guiadecomprasapp](https://msfcampos05.wixsite.com/guiadecomprasapp)
+
+![](http://i.picasion.com/pic90/7c60b60f7840d1b3ccb97756871b8d46.gif)
+
+
+## Functionality Implementention Sprints
+
+- [x] Login Screen, SingUp Screen
+- [x] Tabs
+- [x] Home, Wallet, Profile Screen
+- [x] Add Cupom Screen
+- [x] Product Description Screen
+- [x] SearchBar
+- [x] QRCode Generator
+- [x] Firebase Integration - CRUD
+- [x] Generate apk signed
+- [x] Tests
 
 You'll need to have [Expo](https://expo.io/learn) installed on your machine in order to follow along.
 
@@ -27,10 +56,33 @@ export default {
 - `git clone https://github.com/msfcampos05/DescontoFacilApp.git`
 - `yarn install` / `npm install`
 
+NPM:
+
+```sh
+npm install
+```
+
+YARN:
+
+```sh
+yarn install
+```
+
+
 ## Running
 
-### Use the `yarn start`, `yarn ios`, or `yarn android` tasks as detailed below.
+### Use the `yarn/expo/npm start`, `yarn/npm ios`, or `yarn/npm android` tasks as detailed below.
+NPM && EXPO:
 
+```sh
+npm start or expo start
+```
+
+YARN:
+
+```sh
+yarn start
+```
   ## Available Scripts
 
   This app was initialized using Yarn and therefore you should use Yarn commands going forward.
