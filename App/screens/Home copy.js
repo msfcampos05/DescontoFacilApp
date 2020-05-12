@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   Alert,
   SafeAreaView,
-  ScrollView
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import addImage from '../../assets/plusCategory.png';
@@ -18,8 +17,9 @@ import * as firebase from 'firebase';
 import Lottie from 'lottie-react-native';
 import dataloading from '../Components/loaders/home-loading.json';
 import deleteLoading from '../Components/loaders/check.json';
+import Product from '../Components/ProductList'
+
 const { width, height } = Dimensions.get('window');
-import Product from '../Components/ProductList';
 
 export default class Home extends Component {
 
@@ -33,24 +33,25 @@ export default class Home extends Component {
       whatoading: 1,
       barIcon: 'https://img.icons8.com/ios/100/000000/search--v1.png'
     };
-
+    
     this.dataBackup = [];
   }
 
-  //add item to wallet 
-  handledeleteItembyId = async (id) => {
 
-    this.setState({ whatoading: 'delete' });
-    this.setState({ loading: true });
+  //add item to wallet 
+  handledeleteItembyId = async (id) =>{
+
+    this.setState({whatoading: 'delete' });
+    this.setState({loading: true });
 
     await firebase.firestore()
       .collection("products")
       .doc(id)
-      .delete().then(() => {
-        setTimeout(() => {
-          this.setState({ loading: false });
-        },
-          300);
+      .delete().then( ()=> {
+      setTimeout(() => {
+        this.setState({loading: false });
+      },
+        300);
         console.log("Document successfully deleted!");
       }).catch(function (error) {
         console.error("Error removing document: ", error);
@@ -108,10 +109,10 @@ export default class Home extends Component {
     var Unmount;
 
     Unmount = this.getFirebaseData().then(() => {
-      this.setState({ whatoading: 1 });
-      this.setState({ loading: true });
+      this.setState({whatoading: 1 });
+      this.setState({loading: true });
       setTimeout(() => {
-        this.setState({ loading: false });
+        this.setState({loading: false });
       },
         2000);
     }
@@ -129,17 +130,17 @@ export default class Home extends Component {
   filterItem = event => {
 
     //Armazena texto do input search
-    var text = event.nativeEvent.text;
-    if (text == '') {
+    var text= event.nativeEvent.text;
+    if(text==''){
       this.setState({
-        barIcon: 'https://img.icons8.com/ios/100/000000/search--v1.png'
+        barIcon:'https://img.icons8.com/ios/100/000000/search--v1.png'
       })
-    } else {
+    }else{
       this.setState({
-        barIcon: 'https://img.icons8.com/ios/50/000000/left.png'
+        barIcon:'https://img.icons8.com/ios/50/000000/left.png'
       })
     }
-
+    
     this.setState({
       query: text,
     });
@@ -151,7 +152,7 @@ export default class Home extends Component {
       return itemData.indexOf(textData) > -1;
     });
 
-    this.setState({
+   this.setState({
       data: newData,
     });
 
@@ -163,13 +164,13 @@ export default class Home extends Component {
       <View style={{ height: 5, width: '100%', backgroundColor: '#e5e5e5' }} />
     );
   };
-
-  searchIconBack = () => {
-
-    if (this.state.barIcon == 'https://img.icons8.com/ios/50/000000/left.png') {
+  
+  searchIconBack =()=>{
+      
+    if(this.state.barIcon=='https://img.icons8.com/ios/50/000000/left.png'){
       this.setState({
-        barIcon: 'https://img.icons8.com/ios/100/000000/search--v1.png',
-        query: null
+        barIcon:'https://img.icons8.com/ios/100/000000/search--v1.png',
+        query:null
       })
       this.getFirebaseData();
     }
@@ -178,23 +179,21 @@ export default class Home extends Component {
 
   //Render 
   render() {
-
     //Loading Lottie based on user action
     if (this.state.loading == true && this.state.whatoading == 1) {
       return (
-        <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#9b58b6' }}>
+        <View style={{ flex: 1,justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#9b58b6' }}>
           <Lottie source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
           <Text style={{ textAlign: 'center', color: '#ffff', fontSize: 12 }}>Aguarde...</Text>
         </View>
       )
-    } else if (this.state.loading == true && this.state.whatoading == 'delete') {
+    }else if (this.state.loading == true && this.state.whatoading == 'delete') {
       return (
-        <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
-          <Lottie source={deleteLoading} style={{ width: 350, height: 350 }} autoPlay loop />
-        </View>
+          <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
+              <Lottie source={deleteLoading} style={{ width: 350, height: 350 }} autoPlay loop />
+          </View>
       )
-    }
-
+  }
     const { navigation } = this.props;
     console.disableYellowBox = true;
     return (
@@ -206,53 +205,71 @@ export default class Home extends Component {
           <Text style={styles.headerTitle}>Desconto Fácil App</Text>
         </View>
 
-        <ScrollView>
-          <View style={styles.header}>
-            <View style={styles.SectionStyle}>
-              <TouchableOpacity onPress={() => this.searchIconBack()}>
-                <Image
-                  //We are showing the Image from online
-                  source={{ uri: this.state.barIcon }}
-                  //Image Style
-                  style={styles.ImageStyle}
-                />
-              </TouchableOpacity>
-              <TextInput
-                underlineColorAndroid="transparent"
-                placeholder="O que procura..."
-                placeholderTextColor="gray"
-                value={this.state.query}
-                onChange={this.filterItem.bind(this)}
-                style={styles.input}
-              />
-            </View>
+        <View style={styles.header}>
+          <View style={styles.SectionStyle}>
+            <TouchableOpacity onPress={()=>this.searchIconBack()}>
+            <Image
+              //We are showing the Image from online
+              source={{ uri: this.state.barIcon }}
+              //Image Style
+              style={styles.ImageStyle}
+            />
+            </TouchableOpacity>
+            <TextInput
+              underlineColorAndroid="transparent"
+              placeholder="O que procura..."
+              placeholderTextColor="gray"
+              value={this.state.query}
+              onChange={this.filterItem.bind(this)}
+              style={styles.input}
+            />
           </View>
+        </View>
 
-          <View style={styles.ProductContainer}>
-            {this.state.data.map(data =>
+       / <FlatList
+          data={this.state.data}
+          ItemSeparatorComponent={() => this.separator()}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
               <TouchableOpacity
-                onLongPress={() => this.addItemWalletById(data.id)}
+                onLongPress={() => this.addItemWalletById(item.id)}
                 onPress={() => {
                   navigation.push('ProductDetails', {
-                    itemId: data.id,
-                    itemName: data.produto,
-                    itemPrice: data.valor,
-                    itemImg: data.img,
-                    itemDescription: data.descricao,
+                    itemId: item.id,
+                    itemName: item.produto,
+                    itemPrice: item.valor,
+                    itemImg: item.img,
+                    itemDescription: item.descricao,
                   })
                 }}>
-                <Product key={data.id} data={data} />
+                <View style={styles.productContainer}>
+                  <Image
+                    resizeMode="contain"
+                    style={styles.image}
+                    source={{ uri: item.img }}
+                  />
+                  <View style={styles.dataContainer}>
+                    <Text numberOfLines={1} style={styles.title}>
+                      {item.produto}
+                    </Text>
+                    <Text numberOfLines={8} style={styles.description}>
+                      {item.descricao}
+                    </Text>
+                    <Text style={styles.price}>{item.valor}</Text>
+                  </View>
+                </View>
               </TouchableOpacity>
-            )}
-          </View>
-        </ScrollView>
-
-        <TouchableOpacity style={styles.addButton} onPress={() => navigation.push('addProducts')}>
-          <View style={styles.ViewiButton}>
-            <Image style={styles.Image} source={addImage} />
-          </View>
-        </TouchableOpacity>
-
+            );
+          }}
+        />
+        <View>
+          <TouchableOpacity style={styles.addButton} onPress={() => navigation.push('addProducts')}>
+            <View style={styles.ViewiButton}>
+              <Image style={styles.Image} source={addImage} />
+            </View>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     );
   }
@@ -262,13 +279,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  ProductContainer: {
-    padding: 15,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    backgroundColor: "#f8f8fa",
   },
   header: {
     height: 60,
@@ -310,7 +320,35 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
     alignItems: 'center',
   },
-
+  productContainer: {
+    flexDirection: 'row',
+    padding: 2,
+  },
+  image: {
+    height: 150,
+    width: 90,
+    alignSelf: "center"
+  },
+  dataContainer: {
+    padding: 5,
+    paddingTop: 5,
+    width: width - 100,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000"
+  },
+  description: {
+    fontSize: 14,
+    color: 'gray',
+    textAlign: 'justify',
+  },
+  price: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000"
+  },
   Image: {
     width: 20,
     height: 23,

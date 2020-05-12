@@ -60,7 +60,6 @@ export default class addProductScreen extends React.Component {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [3, 4]
         });
 
         if (!result.cancelled) {
