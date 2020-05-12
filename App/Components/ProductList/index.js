@@ -5,11 +5,15 @@ import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
 
 import styles from './styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Product = ({ data: { img, descricao, id, valor, produto } }) => (
   
   <View style={styles.container}>
-    <Image source={{ uri: img }} style={styles.image} />
+
+    <View style={styles.imageContainer}>
+      <Image source={{ uri: img }} style={styles.image} />
+    </View>
 
     <View style={styles.separatorContainer}>
 
