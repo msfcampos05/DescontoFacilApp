@@ -181,7 +181,7 @@ export default class Wallet extends Component {
                   <View style={styles.qrView}>
                 
                   <QRCode
-                      value={item.valor}
+                      value={item.id}
                       size={this.state.qrSize}
                       bgColor='black'
                       fgColor='white' />

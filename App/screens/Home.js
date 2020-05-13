@@ -6,20 +6,18 @@ import {
   StatusBar,
   TextInput,
   Image,
-  Dimensions,
   TouchableOpacity,
   Alert,
   SafeAreaView,
   ScrollView
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 import addImage from '../../assets/plusCategory.png';
 import * as firebase from 'firebase';
 import Lottie from 'lottie-react-native';
 import dataloading from '../Components/loaders/home-loading.json';
 import deleteLoading from '../Components/loaders/check.json';
-const { width, height } = Dimensions.get('window');
 import Product from '../Components/ProductList';
+
 
 export default class Home extends Component {
 
@@ -157,13 +155,6 @@ export default class Home extends Component {
 
   };
 
-  //Separator for flat list 
-  separator = () => {
-    return (
-      <View style={{ height: 5, width: '100%', backgroundColor: '#e5e5e5' }} />
-    );
-  };
-
   searchIconBack = () => {
 
     if (this.state.barIcon == 'https://img.icons8.com/ios/50/000000/left.png') {
@@ -179,6 +170,7 @@ export default class Home extends Component {
   //Render 
   render() {
 
+    
     //Loading Lottie based on user action
     if (this.state.loading == true && this.state.whatoading == 1) {
       return (
