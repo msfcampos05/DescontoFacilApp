@@ -14,10 +14,11 @@ import {
 import addImage from '../../assets/plusCategory.png';
 import * as firebase from 'firebase';
 import Lottie from 'lottie-react-native';
-import dataloading from '../Components/loaders/home-loading.json';
+import dataloading from '../Components/loaders/main-feed-page.json';
 import deleteLoading from '../Components/loaders/check.json';
 import Product from '../Components/ProductList';
 
+console.disableYellowBox = true;
 
 export default class Home extends Component {
 
@@ -68,6 +69,7 @@ export default class Home extends Component {
     )
 
   }
+
   //Get user info from firebase
   getFirebaseData = async () => {
 
@@ -167,19 +169,45 @@ export default class Home extends Component {
 
   }
 
+  _loadingView() {
+    return(
+    <View style={{flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#f8f8fa'}}>
+      <Lottie backgroundColor={'#f8f8fa'} source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
+      <Text style={{ textAlign: 'center', color: '#ff5b77', fontSize: 12 }}>Aguarde, estamos carregando as informações para você!</Text>
+    </View>
+    )
+  }
+
+  _renderItens() {
+
+    const { navigation } = this.props;
+
+    return(
+      <View style={styles.ProductContainer}>
+
+      {this.state.data.map(data =>
+        <TouchableOpacity
+          onLongPress={() => this.addItemWalletById(data.id)}
+          onPress={() => {
+            navigation.push('ProductDetails', {
+              itemId: data.id,
+              itemName: data.produto,
+              itemPrice: data.valor,
+              itemImg: data.img,
+              itemDescription: data.descricao,
+            })
+          }}>
+          <Product key={data.id} data={data} />
+        </TouchableOpacity>
+      )}
+    </View>
+    )
+  }
+
   //Render 
   render() {
 
-    
-    //Loading Lottie based on user action
-    if (this.state.loading == true && this.state.whatoading == 1) {
-      return (
-        <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#9b58b6' }}>
-          <Lottie source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
-          <Text style={{ textAlign: 'center', color: '#ffff', fontSize: 12 }}>Aguarde...</Text>
-        </View>
-      )
-    } else if (this.state.loading == true && this.state.whatoading == 'delete') {
+     if (this.state.loading == true && this.state.whatoading == 'delete') {
       return (
         <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
           <Lottie source={deleteLoading} style={{ width: 350, height: 350 }} autoPlay loop />
@@ -187,8 +215,6 @@ export default class Home extends Component {
       )
     }
 
-    const { navigation } = this.props;
-    console.disableYellowBox = true;
     return (
       <SafeAreaView style={styles.container}>
 
@@ -219,24 +245,12 @@ export default class Home extends Component {
               />
             </View>
           </View>
+          {this.state.loading ? this._loadingView() :
 
-          <View style={styles.ProductContainer}>
-            {this.state.data.map(data =>
-              <TouchableOpacity
-                onLongPress={() => this.addItemWalletById(data.id)}
-                onPress={() => {
-                  navigation.push('ProductDetails', {
-                    itemId: data.id,
-                    itemName: data.produto,
-                    itemPrice: data.valor,
-                    itemImg: data.img,
-                    itemDescription: data.descricao,
-                  })
-                }}>
-                <Product key={data.id} data={data} />
-              </TouchableOpacity>
-            )}
-          </View>
+            this._renderItens()
+
+          }
+
         </ScrollView>
 
         <TouchableOpacity style={styles.addButton} onPress={() => navigation.push('addProducts')}>
@@ -253,14 +267,13 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f8f8fa",
   },
   ProductContainer: {
     padding: 15,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    backgroundColor: "#f8f8fa",
   },
   header: {
     height: 60,

@@ -4,7 +4,6 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { Ionicons } from "@expo/vector-icons";
 import FireFunctions from "../config/FireFunctions";
-import * as firebase from 'firebase'
 import * as ImagePicker from "expo-image-picker";
 
 export default class addProductScreen extends React.Component {
@@ -42,7 +41,6 @@ export default class addProductScreen extends React.Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3]
     });
 
     if (!result.cancelled) {
