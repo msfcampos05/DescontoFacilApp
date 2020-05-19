@@ -39,7 +39,6 @@ export default class Home extends Component {
   //add item to wallet 
   handledeleteItembyId = async (id) => {
 
-    this.setState({ whatoading: 'delete' });
     this.setState({ loading: true });
 
     await firebase.firestore()
@@ -50,7 +49,6 @@ export default class Home extends Component {
           this.setState({ loading: false });
         },
           300);
-        console.log("Document successfully deleted!");
       }).catch(function (error) {
         console.error("Error removing document: ", error);
       });
@@ -206,14 +204,7 @@ export default class Home extends Component {
 
   //Render 
   render() {
-
-     if (this.state.loading == true && this.state.whatoading == 'delete') {
-      return (
-        <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
-          <Lottie source={deleteLoading} style={{ width: 350, height: 350 }} autoPlay loop />
-        </View>
-      )
-    }
+    const { navigation } = this.props;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -245,9 +236,7 @@ export default class Home extends Component {
               />
             </View>
           </View>
-          {this.state.loading ? this._loadingView() :
-
-            this._renderItens()
+          {this.state.loading ? this._loadingView() : this._renderItens()
 
           }
 
