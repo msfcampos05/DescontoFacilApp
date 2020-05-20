@@ -1,20 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Lottie from 'lottie-react-native';
-import lottie from '../loaders/dataloading'
+import HomeLoading from '../loaders/main-feed-page.json'
 
-function lottieLoading({ navigation }, data, text, color, tcolor) {
-
-    const dataloading = data;
-    const datatext = text;
-    const datacolor = color;
-    const textcolor = tcolor;
+function lottieLoading({data, text, color, tcolor}) {
 
     return (
 
-        <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: datacolor }}>
-            <Lottie source={lottie.dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
-            <Text style={{ textAlign: 'center', color: textcolor, fontSize: 12 }}>{datatext}</Text>
+        <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#f8f8fa' }}>
+            <Lottie source={data} style={{ width: 350, height: 350 }} autoPlay loop />
+            <Text style={{ textAlign: 'center', color: '#ff5b77', fontSize: 12 }}>Aguarde, estamos carregando as informações para você!</Text>
         </View>
 
     );

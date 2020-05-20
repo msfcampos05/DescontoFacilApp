@@ -14,9 +14,10 @@ import {
 import addImage from '../../assets/plusCategory.png';
 import * as firebase from 'firebase';
 import Lottie from 'lottie-react-native';
-import dataloading from '../Components/loaders/main-feed-page.json';
 import deleteLoading from '../Components/loaders/check.json';
 import Product from '../Components/ProductList';
+import LoadingComponent from '../Components/defaultLoading/lottieLoading';
+import HomeLoading from '../Components/loaders/main-feed-page.json'
 
 console.disableYellowBox = true;
 
@@ -27,9 +28,9 @@ export default class Home extends Component {
 
     this.state = {
       query: null,
-      loading: false,
+      loadingDelete: false,
       data: [],
-      whatoading: 1,
+      loadingList: false,
       barIcon: 'https://img.icons8.com/ios/100/000000/search--v1.png'
     };
 
@@ -39,16 +40,13 @@ export default class Home extends Component {
   //add item to wallet 
   handledeleteItembyId = async (id) => {
 
-    this.setState({ loading: true });
+    this.setState({ loadingDelete: true });
 
     await firebase.firestore()
       .collection("products")
       .doc(id)
       .delete().then(() => {
-        setTimeout(() => {
-          this.setState({ loading: false });
-        },
-          300);
+        this.setState({ loadingDelete: false });
       }).catch(function (error) {
         console.error("Error removing document: ", error);
       });
@@ -92,9 +90,9 @@ export default class Home extends Component {
           data: list,
         })
 
-        if (this.loading) {
+        if (this.loadingList) {
           this.setState({
-            loading: false
+            loadingList: false
           })
         }
       });
@@ -106,13 +104,9 @@ export default class Home extends Component {
     var Unmount;
 
     Unmount = this.getFirebaseData().then(() => {
-      this.setState({ whatoading: 1 });
-      this.setState({ loading: true });
-      setTimeout(() => {
-        this.setState({ loading: false });
-      },
-        2000);
+      this.setState({ loadingList: true });
     }
+    
     );
 
     this.componentWillUnmount(Unmount)
@@ -168,12 +162,11 @@ export default class Home extends Component {
   }
 
   _loadingView() {
-    return(
-    <View style={{flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#f8f8fa'}}>
-      <Lottie backgroundColor={'#f8f8fa'} source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
-      <Text style={{ textAlign: 'center', color: '#ff5b77', fontSize: 12 }}>Aguarde, estamos carregando as informações para você!</Text>
-    </View>
-    )
+    const SelectLoading = null;
+    this.state.loadingList ? SelectLoading = HomeLoading : this.state.loadingList ? SelectLoading = deleteLoading : SelectLoading = null;
+   
+    return( <LoadingComponent data={SelectLoading}/> )
+
   }
 
   _renderItens() {
