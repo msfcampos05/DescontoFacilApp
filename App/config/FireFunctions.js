@@ -1,9 +1,8 @@
 
 import * as firebase from 'firebase'
-var moment = require('moment');
 
 class FireFunctions {
-
+    
     //Criar um novo usuário e atualizar os campos de profile
     addUser = async ({ username, email, phone_number, adress, password, localUri }) => {
 

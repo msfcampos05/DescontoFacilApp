@@ -11,12 +11,21 @@ import {
   SafeAreaView,
   ScrollView
 } from 'react-native';
+
+//PlusButton Image
 import addImage from '../../assets/plusCategory.png';
+
+//Firebase import 
 import * as firebase from 'firebase';
-import Lottie from 'lottie-react-native';
-import deleteLoading from '../Components/loaders/check.json';
+
+//list product component
 import Product from '../Components/ProductList';
+
+//Lottie Componet to Loading Select
 import LoadingComponent from '../Components/defaultLoading/lottieLoading';
+
+//Lottie Fires 
+import deleteLoading from '../Components/loaders/check.json';
 import HomeLoading from '../Components/loaders/main-feed-page.json'
 
 console.disableYellowBox = true;
@@ -28,25 +37,31 @@ export default class Home extends Component {
 
     this.state = {
       query: null,
-      loadingDelete: false,
+      loading: false,
       data: [],
-      loadingList: false,
+      whatoading: 1,
       barIcon: 'https://img.icons8.com/ios/100/000000/search--v1.png'
     };
-
+    
     this.dataBackup = [];
   }
 
-  //add item to wallet 
-  handledeleteItembyId = async (id) => {
 
-    this.setState({ loadingDelete: true });
+  //add item to wallet 
+  handledeleteItembyId = async (id) =>{
+
+    this.setState({whatoading: 2 });
+    this.setState({loading: true });
 
     await firebase.firestore()
       .collection("products")
       .doc(id)
-      .delete().then(() => {
-        this.setState({ loadingDelete: false });
+      .delete().then( ()=> {
+      setTimeout(() => {
+        this.setState({loading: false });
+      },
+        300);
+        console.log("Document successfully deleted!");
       }).catch(function (error) {
         console.error("Error removing document: ", error);
       });
@@ -66,6 +81,7 @@ export default class Home extends Component {
 
   }
 
+  
   //Get user info from firebase
   getFirebaseData = async () => {
 
@@ -90,9 +106,9 @@ export default class Home extends Component {
           data: list,
         })
 
-        if (this.loadingList) {
+        if (this.loading) {
           this.setState({
-            loadingList: false
+            loading: false
           })
         }
       });
@@ -104,9 +120,13 @@ export default class Home extends Component {
     var Unmount;
 
     Unmount = this.getFirebaseData().then(() => {
-      this.setState({ loadingList: true });
+      this.setState({whatoading: 1 });
+      this.setState({loading: true });
+      setTimeout(() => {
+        this.setState({loading: false });
+      },
+        2000);
     }
-    
     );
 
     this.componentWillUnmount(Unmount)
@@ -162,12 +182,11 @@ export default class Home extends Component {
   }
 
   _loadingView() {
-    const SelectLoading = null;
-    this.state.loadingList ? SelectLoading = HomeLoading : this.state.loadingList ? SelectLoading = deleteLoading : SelectLoading = null;
-   
-    return( <LoadingComponent data={SelectLoading}/> )
+    if(this.state.loading==true && this.state.whatoading==1) {return( <LoadingComponent data={HomeLoading}/> )}
+    if(this.state.loading==true && this.state.whatoading==2) {return( <LoadingComponent data={deleteLoading}/> )}
 
   }
+  
 
   _renderItens() {
 
