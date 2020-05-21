@@ -42,25 +42,24 @@ export default class Home extends Component {
       whatoading: 1,
       barIcon: 'https://img.icons8.com/ios/100/000000/search--v1.png'
     };
-    
+
     this.dataBackup = [];
   }
 
-
   //add item to wallet 
-  handledeleteItembyId = async (id) =>{
+  handledeleteItembyId = async (id) => {
 
-    this.setState({whatoading: 2 });
-    this.setState({loading: true });
+    this.setState({ whatoading: 2 });
+    this.setState({ loading: true });
 
     await firebase.firestore()
       .collection("products")
       .doc(id)
-      .delete().then( ()=> {
-      setTimeout(() => {
-        this.setState({loading: false });
-      },
-        300);
+      .delete().then(() => {
+        setTimeout(() => {
+          this.setState({ loading: false });
+        },
+          300);
         console.log("Document successfully deleted!");
       }).catch(function (error) {
         console.error("Error removing document: ", error);
@@ -81,7 +80,6 @@ export default class Home extends Component {
 
   }
 
-  
   //Get user info from firebase
   getFirebaseData = async () => {
 
@@ -120,10 +118,10 @@ export default class Home extends Component {
     var Unmount;
 
     Unmount = this.getFirebaseData().then(() => {
-      this.setState({whatoading: 1 });
-      this.setState({loading: true });
+      this.setState({ whatoading: 1 });
+      this.setState({ loading: true });
       setTimeout(() => {
-        this.setState({loading: false });
+        this.setState({ loading: false });
       },
         2000);
     }
@@ -182,35 +180,35 @@ export default class Home extends Component {
   }
 
   _loadingView() {
-    if(this.state.loading==true && this.state.whatoading==1) {return( <LoadingComponent data={HomeLoading}/> )}
-    if(this.state.loading==true && this.state.whatoading==2) {return( <LoadingComponent data={deleteLoading}/> )}
+    if (this.state.loading == true && this.state.whatoading == 1) { return (<LoadingComponent data={HomeLoading} />) }
+    if (this.state.loading == true && this.state.whatoading == 2) { return (<LoadingComponent data={deleteLoading} />) }
 
   }
-  
+
 
   _renderItens() {
 
     const { navigation } = this.props;
 
-    return(
+    return (
       <View style={styles.ProductContainer}>
 
-      {this.state.data.map(data =>
-        <TouchableOpacity
-          onLongPress={() => this.addItemWalletById(data.id)}
-          onPress={() => {
-            navigation.push('ProductDetails', {
-              itemId: data.id,
-              itemName: data.produto,
-              itemPrice: data.valor,
-              itemImg: data.img,
-              itemDescription: data.descricao,
-            })
-          }}>
-          <Product key={data.id} data={data} />
-        </TouchableOpacity>
-      )}
-    </View>
+        {this.state.data.map(data =>
+          <TouchableOpacity
+            onLongPress={() => this.addItemWalletById(data.id)}
+            onPress={() => {
+              navigation.push('ProductDetails', {
+                itemId: data.id,
+                itemName: data.produto,
+                itemPrice: data.valor,
+                itemImg: data.img,
+                itemDescription: data.descricao,
+              })
+            }}>
+            <Product key={data.id} data={data} />
+          </TouchableOpacity>
+        )}
+      </View>
     )
   }
 
